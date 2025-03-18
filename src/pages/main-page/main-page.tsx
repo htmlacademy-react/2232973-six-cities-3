@@ -1,6 +1,10 @@
 import { Card } from '../../components/card/card';
 
-export function MainPage(): JSX.Element {
+type MainPageProps = {
+  rentalOffersCount: number;
+};
+
+export function MainPage({ rentalOffersCount }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -74,7 +78,7 @@ export function MainPage(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">312 places to stay in Amsterdam</b>
+              <b className="places__found">{rentalOffersCount} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -107,18 +111,3 @@ export function MainPage(): JSX.Element {
     </div>
   );
 }
-
-
-/*
-Создайте и опишите компонент главной страницы (директорию и файл в ней).
-Название для компонента придумайте самостоятельно. Для модулей с компонентами используйте расширение .tsx.
-Пока это будет один большой компонент. Не пугайтесь, дальнейший рефакторинг его преобразит.
-Разметку вы найдёте в директории /markup. Вёрстка главной страницы представлена в файле main.html.
-
-Создайте и опишите компонент для отображения одной карточки предложения в списке.
-Перенесите в него соответствующую часть разметки из компонента, созданного в первом шаге.
-
-Удалите из компонента главной страницы все статичные карточки предложений.
-Вместо них подключите компонент карточки предложения и выведите его столько раз,
-сколько было предусмотрено карточек предложений в изначальной разметке.
-*/

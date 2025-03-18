@@ -1,7 +1,11 @@
 import { MainPage } from '../../pages/main-page/main-page';
 
-export function App(): JSX.Element {
+type AppProps = {
+  rentalOffersCount: number;
+};
+
+export function App({ rentalOffersCount }: AppProps): JSX.Element {
   return (
-    <MainPage />
+    <MainPage rentalOffersCount={rentalOffersCount}/>
   );
 }
