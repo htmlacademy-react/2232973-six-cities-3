@@ -50,7 +50,7 @@ export function App({ rentalOffersCount }: AppProps): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferPage />}
+            element={<OfferPage authorizationStatus={authorizationStatus} />}
           />
           <Route
             path="*"
