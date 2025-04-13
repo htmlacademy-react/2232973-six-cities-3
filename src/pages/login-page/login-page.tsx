@@ -1,6 +1,5 @@
-export function LoginPage(): JSX.Element {
+export default function LoginPage(): JSX.Element {
   return (
-
     <main className="page__main page__main--login">
       <div className="page__login-container container">
         <section className="login">

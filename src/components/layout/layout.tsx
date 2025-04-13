@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '@/const';
 import { getLayoutState } from './utils';
-import { getAuthorizationStatus } from '../../autharization-status';
+import { getAuthorizationStatus } from '@/autharization-status';
 
 export default function Layout(): JSX.Element {
   const { pathname } = useLocation();

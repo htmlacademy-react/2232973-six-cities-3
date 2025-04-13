@@ -1,10 +1,10 @@
-import { Card } from '../../components/card/card';
+import Card from '@/components/card';
 
 type MainPageProps = {
   rentalOffersCount: number;
 };
 
-export function MainPage({ rentalOffersCount }: MainPageProps): JSX.Element {
+export default function MainPage({ rentalOffersCount }: MainPageProps): JSX.Element {
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>

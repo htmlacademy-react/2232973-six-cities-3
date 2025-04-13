@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export function NotFoundPage(): JSX.Element {
+export default function NotFoundPage(): JSX.Element {
   return (
 
     <main className="page__main page__main--index page__main--index-empty">

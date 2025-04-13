@@ -1,11 +1,10 @@
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus } from '@/const';
 
 type OfferPageProps = {
   authorizationStatus: AuthorizationStatus;
 };
 
-export function OfferPage({ authorizationStatus }: OfferPageProps): JSX.Element {
-
+export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.Element {
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
