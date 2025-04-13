@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../const';
 import { getLayoutState } from './utils';
 import { getAuthorizationStatus } from '../../autharization-status';
@@ -23,7 +23,10 @@ export default function Layout(): JSX.Element {
                 <nav className="header__nav">
                   <ul className="header__nav-list">
                     <li className="header__nav-item user">
-                      <a className="header__nav-link header__nav-link--profile" href="#">
+                      <Link
+                        className="header__nav-link header__nav-link--profile"
+                        to={AppRoute.Favourites}
+                      >
                         <div className="header__avatar-wrapper user__avatar-wrapper">
                         </div>
                         {authorizationStatus === AuthorizationStatus.Auth ? (
@@ -32,7 +35,7 @@ export default function Layout(): JSX.Element {
                             <span className="header__favorite-count">3</span>
                           </>
                         ) : <span className="header__login">Sign in</span>}
-                      </a>
+                      </Link>
                     </li>
                     {authorizationStatus === AuthorizationStatus.Auth ? (
                       <li className="header__nav-item">
