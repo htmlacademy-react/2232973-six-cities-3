@@ -8,12 +8,14 @@ import NotFoundPage from '@/pages/not-found-page';
 import PrivateRoute from '@/components/private-route/private-route';
 import Layout from '@/components/layout';
 import { getAuthorizationStatus } from '@/autharization-status';
+import { Offer } from '@/types/offers';
 
 type AppProps = {
   rentalOffersCount: number;
+  offers: Offer[];
 };
 
-export default function App({ rentalOffersCount }: AppProps): JSX.Element {
+export default function App({ rentalOffersCount, offers }: AppProps): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
 
   return (
@@ -50,7 +52,12 @@ export default function App({ rentalOffersCount }: AppProps): JSX.Element {
           />
           <Route
             path={AppRoute.Offer}
-            element={<OfferPage authorizationStatus={authorizationStatus} />}
+            element={
+              <OfferPage
+                offers={offers}
+                authorizationStatus={authorizationStatus}
+              />
+            }
           />
           <Route
             path="*"

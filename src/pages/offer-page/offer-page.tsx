@@ -1,10 +1,21 @@
 import { AuthorizationStatus } from '@/const';
+import { Offer } from '@/types/offers';
+import { useParams } from 'react-router-dom';
 
 type OfferPageProps = {
+  offers: Offer[];
   authorizationStatus: AuthorizationStatus;
 };
 
-export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.Element {
+export default function OfferPage({ offers, authorizationStatus }: OfferPageProps): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+
+  const offer = offers.find((offerItem) => offerItem.id === id);
+
+  if (!offer) {
+    return <h1>Offer not found</h1>;
+  }
+
   return (
     <main className="page__main page__main--offer">
       <section className="offer">
