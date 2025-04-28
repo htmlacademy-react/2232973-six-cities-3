@@ -27,7 +27,12 @@ export default function App({ rentalOffersCount, offers }: AppProps): JSX.Elemen
         >
           <Route
             index
-            element={<MainPage rentalOffersCount={rentalOffersCount} />}
+            element={
+              <MainPage
+                rentalOffersCount={rentalOffersCount}
+                offers={offers}
+              />
+            }
           />
           <Route
             path={AppRoute.Login}

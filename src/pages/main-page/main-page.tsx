@@ -1,10 +1,12 @@
 import Card from '@/components/card';
+import { Offer } from '@/types/offers';
 
 type MainPageProps = {
   rentalOffersCount: number;
+  offers: Offer[];
 };
 
-export default function MainPage({ rentalOffersCount }: MainPageProps): JSX.Element {
+export default function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -65,11 +67,12 @@ export default function MainPage({ rentalOffersCount }: MainPageProps): JSX.Elem
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              <Card />
-              <Card />
-              <Card />
-              <Card />
-              <Card />
+              {offers.map((offer) => (
+                <Card
+                  key={offer.id}
+                  offer={offer}
+                />
+              ))}
             </div>
           </section>
           <div className="cities__right-section">
