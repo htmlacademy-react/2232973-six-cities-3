@@ -5,7 +5,7 @@ type CardProps = {
 };
 
 export default function Card({ offer }: CardProps): JSX.Element {
-  const { isPremium, price, title, type, rating, images } = offer;
+  const { isPremium, price, title, type, rating, images} = offer;
   const ratingWidth = `${Math.round(rating) * 20}%`;
 
   return (

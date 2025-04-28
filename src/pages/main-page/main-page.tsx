@@ -1,4 +1,4 @@
-import Card from '@/components/card';
+import OffersList from '@/components/offers-list';
 import { Offer } from '@/types/offers';
 
 type MainPageProps = {
@@ -67,12 +67,7 @@ export default function MainPage({ rentalOffersCount, offers }: MainPageProps): 
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              {offers.map((offer) => (
-                <Card
-                  key={offer.id}
-                  offer={offer}
-                />
-              ))}
+              {<OffersList offers={offers} />}
             </div>
           </section>
           <div className="cities__right-section">
