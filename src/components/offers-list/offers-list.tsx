@@ -4,13 +4,14 @@ import { useState } from 'react';
 
 type OffersListProps = {
   offers: Offer[];
+  variant?: 'vertical' | 'horizontal';
 };
 
-export default function OffersList({ offers }: OffersListProps): JSX.Element {
+export default function OffersList({ offers, variant = 'vertical' }: OffersListProps): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <>
       {offers.map((offer) => (
         <Card
           key={offer.id}
@@ -18,8 +19,9 @@ export default function OffersList({ offers }: OffersListProps): JSX.Element {
           onMouseEnter={() => setActiveOfferId(offer.id)}
           onMouseLeave={() => setActiveOfferId(null)}
           isActive={activeOfferId === offer.id}
+          variant={variant}
         />
       ))}
-    </div>
+    </>
   );
 }

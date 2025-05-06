@@ -51,7 +51,9 @@ export default function App({ rentalOffersCount, offers }: AppProps): JSX.Elemen
               <PrivateRoute
                 authorizationStatus={authorizationStatus}
               >
-                <FavouritesPage />
+                <FavouritesPage
+                  offers={offers}
+                />
               </PrivateRoute>
             }
           />

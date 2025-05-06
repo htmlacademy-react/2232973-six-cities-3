@@ -31,7 +31,7 @@ export default function Card({
   onMouseEnter,
   onMouseLeave,
   isActive,
-  variant = 'horizontal',
+  variant = 'vertical'
 }: CardProps): JSX.Element {
   const { isPremium, price, title, type, rating, images} = offer;
   const ratingWidth = `${Math.round(rating) * 20}%`;
@@ -43,6 +43,7 @@ export default function Card({
       className={config.articleClass}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      style={{ background: isActive ? 'lightblue' : 'white' }}
     >
       {isPremium && (
         <div className ="place-card__mark">
