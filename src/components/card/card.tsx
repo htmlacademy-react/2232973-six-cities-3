@@ -1,18 +1,71 @@
-export function Card(): JSX.Element {
+import { Offer } from '@/types/offers';
+import { Link } from 'react-router-dom';
+
+type CardProps = {
+  offer: Offer;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  isActive?: boolean;
+  variant?: 'vertical' | 'horizontal';
+};
+
+const cardConfig = {
+  vertical: {
+    articleClass: 'cities__card place-card',
+    imageWrapperClass: 'cities__image-wrapper place-card__image-wrapper',
+    infoClass: 'place-card__info',
+    imageWidth: 260,
+    imageHeight: 200,
+  },
+  horizontal: {
+    articleClass: 'favorites__card place-card',
+    imageWrapperClass: 'favorites__image-wrapper place-card__image-wrapper',
+    infoClass: 'favorites__card-info place-card__info',
+    imageWidth: 150,
+    imageHeight: 110,
+  },
+} as const;
+
+
+export default function Card({
+  offer,
+  onMouseEnter,
+  onMouseLeave,
+  isActive,
+  variant = 'vertical'
+}: CardProps): JSX.Element {
+  const { isPremium, price, title, type, rating, images} = offer;
+  const ratingWidth = `${Math.round(rating) * 20}%`;
+
+  const config = cardConfig[variant];
+
   return (
-    <article className="cities__card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
+    <article
+      className={config.articleClass}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      style={{ background: isActive ? 'lightblue' : 'white' }}
+    >
+      {isPremium && (
+        <div className ="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
+      <div className={config.imageWrapperClass}>
+        <Link to={`/offer/${offer.id}`}>
+          <img
+            className="place-card__image"
+            src={images[0]}
+            width={config.imageWidth}
+            height={config.imageHeight}
+            alt="Place image"
+          />
+        </Link>
       </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img className="place-card__image" src="img/apartment-01.jpg" width="260" height="200" alt="Place image" />
-        </a>
-      </div>
-      <div className="place-card__info">
+      <div className={config.infoClass}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;120</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
@@ -24,14 +77,14 @@ export function Card(): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: '80%' }}></span>
+            <span style={{ width: ratingWidth }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
+          <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );
