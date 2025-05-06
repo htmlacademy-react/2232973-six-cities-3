@@ -1,4 +1,5 @@
 import { Offer } from '@/types/offers';
+import { Link } from 'react-router-dom';
 
 type CardProps = {
   offer: Offer;
@@ -51,7 +52,7 @@ export default function Card({
         </div>
       )}
       <div className={config.imageWrapperClass}>
-        <a href="#">
+        <Link to={`/offer/${offer.id}`}>
           <img
             className="place-card__image"
             src={images[0]}
@@ -59,7 +60,7 @@ export default function Card({
             height={config.imageHeight}
             alt="Place image"
           />
-        </a>
+        </Link>
       </div>
       <div className={config.infoClass}>
         <div className="place-card__price-wrapper">
@@ -81,7 +82,7 @@ export default function Card({
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

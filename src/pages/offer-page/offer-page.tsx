@@ -1,6 +1,6 @@
 import { AuthorizationStatus } from '@/const';
 import { Offer } from '@/types/offers';
-import CommentForm from '@/components/comment-form/comment-form';
+import CommentForm from '@/components/comment-form';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page';
 
