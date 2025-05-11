@@ -1,5 +1,6 @@
 import { Offer } from '@/types/offers';
 import { Link } from 'react-router-dom';
+import { capitalizeFirstLetter } from '@/common';
 
 type CardProps = {
   offer: Offer;
@@ -84,7 +85,7 @@ export default function Card({
         <h2 className="place-card__name">
           <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{capitalizeFirstLetter(type)}</p>
       </div>
     </article>
   );
