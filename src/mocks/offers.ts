@@ -12,15 +12,15 @@ export const mockOffers: Offer[] = [
     city: {
       name: 'Amsterdam',
       location: {
-        latitude: 0,
-        longitude: 0,
-        zoom: 0
+        latitude: 52.371807,
+        longitude: 4.896029,
+        zoom: 13
       }
     },
     location: {
       latitude: 52.3909553943508,
       longitude: 4.85309666406198,
-      zoom: 0
+      zoom: 16
     },
     isFavorite: false,
     isPremium: false,

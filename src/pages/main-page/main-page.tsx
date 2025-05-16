@@ -1,4 +1,5 @@
 import OffersList from '@/components/offers-list';
+import Map from '@/components/map';
 import { Offer } from '@/types/offers';
 
 type MainPageProps = {
@@ -6,46 +7,31 @@ type MainPageProps = {
   offers: Offer[];
 };
 
+const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+
 export default function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
+  const activeCity = 'Amsterdam';
+
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
           <ul className="locations__list tabs__list">
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Paris</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Cologne</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Brussels</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item tabs__item--active">
-                <span>Amsterdam</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Hamburg</span>
-              </a>
-            </li>
-            <li className="locations__item">
-              <a className="locations__item-link tabs__item" href="#">
-                <span>Dusseldorf</span>
-              </a>
-            </li>
+            {cities.map((city) => (
+              <li className="locations__item" key={city}>
+                <a
+                  className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
+                  href="#"
+                >
+                  <span>{city}</span>
+                </a>
+              </li>
+            ))}
           </ul>
         </section>
       </div>
+
       <div className="cities">
         <div className="cities__places-container container">
           <section className="cities__places places">
@@ -71,7 +57,11 @@ export default function MainPage({ rentalOffersCount, offers }: MainPageProps): 
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map"></section>
+            <section className="cities__map map">
+              <Map
+                city={offers[0].city}
+              />
+            </section>
           </div>
         </div>
       </div>
