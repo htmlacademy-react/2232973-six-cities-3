@@ -1,11 +1,10 @@
 import { Offer } from '@/types/offers';
 import { Link } from 'react-router-dom';
+import { capitalizeFirstLetter } from '@/common';
 
 type CardProps = {
   offer: Offer;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
-  isActive?: boolean;
+  onOfferHover?: (offerId: string | null) => void;
   variant?: 'vertical' | 'horizontal';
 };
 
@@ -29,22 +28,21 @@ const cardConfig = {
 
 export default function Card({
   offer,
-  onMouseEnter,
-  onMouseLeave,
-  isActive,
+  onOfferHover,
   variant = 'vertical'
 }: CardProps): JSX.Element {
   const { isPremium, price, title, type, rating, images} = offer;
   const ratingWidth = `${Math.round(rating) * 20}%`;
+  // const handleOfferHover = (evt) => {
+  //   onOfferHover(evt.currentTarget.id);
+  // };
 
   const config = cardConfig[variant];
 
   return (
     <article
       className={config.articleClass}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      style={{ background: isActive ? 'lightblue' : 'white' }}
+      onMouseEnter={() => onOfferHover?.(offer.id)}
     >
       {isPremium && (
         <div className ="place-card__mark">
@@ -84,7 +82,7 @@ export default function Card({
         <h2 className="place-card__name">
           <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{capitalizeFirstLetter(type)}</p>
       </div>
     </article>
   );

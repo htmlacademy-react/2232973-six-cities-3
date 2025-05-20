@@ -1,14 +1,14 @@
 import Card from '@/components/card';
 import { Offer } from '@/types/offers';
-import { useState } from 'react';
+
 
 type OffersListProps = {
   offers: Offer[];
+  onOfferHover?: (offerId: string | null) => void;
   variant?: 'vertical' | 'horizontal';
 };
 
-export default function OffersList({ offers, variant = 'vertical' }: OffersListProps): JSX.Element {
-  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+export default function OffersList({ offers, onOfferHover, variant = 'vertical' }: OffersListProps): JSX.Element {
 
   return (
     <>
@@ -16,9 +16,7 @@ export default function OffersList({ offers, variant = 'vertical' }: OffersListP
         <Card
           key={offer.id}
           offer={offer}
-          onMouseEnter={() => setActiveOfferId(offer.id)}
-          onMouseLeave={() => setActiveOfferId(null)}
-          isActive={activeOfferId === offer.id}
+          onOfferHover={onOfferHover}
           variant={variant}
         />
       ))}
