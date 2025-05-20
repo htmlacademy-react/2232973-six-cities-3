@@ -1,8 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, RefObject } from 'react';
 import leaflet from 'leaflet';
+import { Map as LeafletMap } from 'leaflet';
+import { City } from '@/types/offers';
 
-function useMap(mapRef, city) {
-  const [map, setMap] = useState(null);
+
+function useMap(mapRef: RefObject<HTMLDivElement>, city: City) {
+  const [map, setMap] = useState <LeafletMap | null>(null);
   const isRenderedRef = useRef(false);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ function useMap(mapRef, city) {
 
       leaflet
         .tileLayer(
-          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', //'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
           {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
           },

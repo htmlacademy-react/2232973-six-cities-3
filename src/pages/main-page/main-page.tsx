@@ -1,6 +1,7 @@
 import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
 import { Offer } from '@/types/offers';
+import { useState } from 'react';
 
 type MainPageProps = {
   rentalOffersCount: number;
@@ -11,6 +12,11 @@ const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseld
 
 export default function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
   const activeCity = 'Amsterdam';
+
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
+  const handleOfferHover = (offerId: string | null) => {
+    setSelectedOfferId(offerId);
+  };
 
   return (
     <main className="page__main page__main--index">
@@ -53,13 +59,18 @@ export default function MainPage({ rentalOffersCount, offers }: MainPageProps): 
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              {<OffersList offers={offers} />}
+              <OffersList
+                offers={offers}
+                onOfferHover={handleOfferHover}
+              />
             </div>
           </section>
           <div className="cities__right-section">
             <section className="cities__map map">
               <Map
                 city={offers[0].city}
+                offers={offers}
+                selectedOfferId={selectedOfferId}
               />
             </section>
           </div>
