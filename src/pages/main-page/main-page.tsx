@@ -8,7 +8,7 @@ type MainPageProps = {
   offers: Offer[];
 };
 
-const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+const SIX_CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export default function MainPage({ rentalOffersCount, offers }: MainPageProps): JSX.Element {
   const activeCity = 'Amsterdam';
@@ -24,7 +24,7 @@ export default function MainPage({ rentalOffersCount, offers }: MainPageProps): 
       <div className="tabs">
         <section className="locations container">
           <ul className="locations__list tabs__list">
-            {cities.map((city) => (
+            {SIX_CITIES.map((city) => (
               <li className="locations__item" key={city}>
                 <a
                   className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
