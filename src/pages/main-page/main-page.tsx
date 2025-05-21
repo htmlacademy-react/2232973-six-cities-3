@@ -66,7 +66,7 @@ export default function MainPage({ rentalOffersCount, offers }: MainPageProps): 
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map">
+            <section className="cities__map map" style={{ backgroundImage: 'none' }}>
               <Map
                 city={offers[0].city}
                 offers={offers}
