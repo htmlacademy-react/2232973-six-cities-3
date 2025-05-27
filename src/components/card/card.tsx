@@ -33,9 +33,6 @@ export default function Card({
 }: CardProps): JSX.Element {
   const { isPremium, price, title, type, rating, images} = offer;
   const ratingWidth = `${Math.round(rating) * 20}%`;
-  // const handleOfferHover = (evt) => {
-  //   onOfferHover(evt.currentTarget.id);
-  // };
 
   const config = cardConfig[variant];
 
@@ -43,6 +40,7 @@ export default function Card({
     <article
       className={config.articleClass}
       onMouseEnter={() => onOfferHover?.(offer.id)}
+      onMouseLeave={() => onOfferHover?.(null)}
     >
       {isPremium && (
         <div className ="place-card__mark">
