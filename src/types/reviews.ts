@@ -10,4 +10,5 @@ export type Review = {
   user: User;
   comment: string;
   rating: number;
+  offerId: string;
 }
