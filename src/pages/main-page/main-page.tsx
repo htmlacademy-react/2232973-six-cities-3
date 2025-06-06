@@ -61,6 +61,7 @@ export default function MainPage(): JSX.Element {
             <section className="cities__map map" style={{ backgroundImage: 'none' }}>
               {offers.length > 0 && (
                 <Map
+                  key={offers[0].city.name}
                   city={offers[0].city}
                   offers={offers}
                   selectedOfferId={selectedOfferId}
