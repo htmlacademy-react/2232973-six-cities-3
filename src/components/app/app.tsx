@@ -11,11 +11,10 @@ import { getAuthorizationStatus } from '@/autharization-status';
 import { Offer } from '@/types/offers';
 
 type AppProps = {
-  rentalOffersCount: number;
   offers: Offer[];
 };
 
-export default function App({ rentalOffersCount, offers }: AppProps): JSX.Element {
+export default function App({ offers }: AppProps): JSX.Element {
   const authorizationStatus = getAuthorizationStatus();
 
   return (
@@ -28,10 +27,7 @@ export default function App({ rentalOffersCount, offers }: AppProps): JSX.Elemen
           <Route
             index
             element={
-              <MainPage
-                rentalOffersCount={rentalOffersCount}
-                offers={offers}
-              />
+              <MainPage />
             }
           />
           <Route
