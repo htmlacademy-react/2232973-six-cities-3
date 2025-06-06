@@ -4,11 +4,6 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCity } from '@/store/action';
 
-// type MainPageProps = {
-//   rentalOffersCount: number;
-//   offers: Offer[];
-// };
-
 const SIX_CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export default function MainPage(): JSX.Element {
