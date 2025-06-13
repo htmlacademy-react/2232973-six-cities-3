@@ -2,13 +2,14 @@ import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setCity } from '@/store/action';
+import { setCity, setOffers } from '@/store/action';
+import { mockOffers } from '@/mocks/offers';
 
 const SIX_CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedCity = useAppSelector((state) => state.city);
+  const selectedCity = useAppSelector((state) => state.city.name);
   const offers = useAppSelector((state) => state.offers);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
@@ -17,8 +18,12 @@ export default function MainPage(): JSX.Element {
     setSelectedOfferId(offerId);
   };
 
-  const handleCityClick = (city: string) => {
-    dispatch(setCity(city));
+  const handleCityClick = (cityName: string) => {
+    const cityObj = mockOffers.find((offer) => offer.city.name === cityName)?.city;
+    if (cityObj) {
+      dispatch(setCity(cityObj));
+      dispatch(setOffers(mockOffers.filter((offer) => offer.city.name === cityName)));
+    }
   };
 
   return (
@@ -61,7 +66,6 @@ export default function MainPage(): JSX.Element {
             <section className="cities__map map" style={{ backgroundImage: 'none' }}>
               {offers.length > 0 && (
                 <Map
-                  key={offers[0].city.name}
                   city={offers[0].city}
                   offers={offers}
                   selectedOfferId={selectedOfferId}
