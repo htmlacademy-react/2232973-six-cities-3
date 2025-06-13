@@ -2,14 +2,17 @@ import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setCity } from '@/store/action';
+import { setCity, setOffers } from '@/store/action';
+import { mockOffers } from '@/mocks/offers';
+import SortOptions from '@/components/sort-options/sort-options';
+import { selectSortedOffers } from '@/store/selector';
 
 const SIX_CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedCity = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
+  const selectedCity = useAppSelector((state) => state.city.name);
+  const offers = useAppSelector(selectSortedOffers);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -17,8 +20,12 @@ export default function MainPage(): JSX.Element {
     setSelectedOfferId(offerId);
   };
 
-  const handleCityClick = (city: string) => {
-    dispatch(setCity(city));
+  const handleCityClick = (cityName: string) => {
+    const cityObj = mockOffers.find((offer) => offer.city.name === cityName)?.city;
+    if (cityObj) {
+      dispatch(setCity(cityObj));
+      dispatch(setOffers(mockOffers.filter((offer) => offer.city.name === cityName)));
+    }
   };
 
   return (
@@ -50,6 +57,7 @@ export default function MainPage(): JSX.Element {
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
             <b className="places__found">{offers.length} places to stay in {selectedCity}</b>
+            <SortOptions />
             <div className="cities__places-list places__list tabs__content">
               <OffersList
                 offers={offers}
@@ -61,7 +69,6 @@ export default function MainPage(): JSX.Element {
             <section className="cities__map map" style={{ backgroundImage: 'none' }}>
               {offers.length > 0 && (
                 <Map
-                  key={offers[0].city.name}
                   city={offers[0].city}
                   offers={offers}
                   selectedOfferId={selectedOfferId}
