@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCity, setOffers } from '@/store/action';
 import { mockOffers } from '@/mocks/offers';
+import SortOptions from '@/components/sort-options/sort-options';
+import { selectSortedOffers } from '@/store/selector';
 
 const SIX_CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector((state) => state.city.name);
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(selectSortedOffers);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -55,6 +57,7 @@ export default function MainPage(): JSX.Element {
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
             <b className="places__found">{offers.length} places to stay in {selectedCity}</b>
+            <SortOptions />
             <div className="cities__places-list places__list tabs__content">
               <OffersList
                 offers={offers}
