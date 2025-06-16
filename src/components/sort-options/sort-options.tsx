@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setSortType } from '@/store/action';
 
@@ -11,23 +12,43 @@ const sortTypes = [
 export default function SortOptions() {
   const dispatch = useAppDispatch();
   const currentSortType = useAppSelector((state) => state.sortType);
+  const [isOpened, setIsOpened] = useState(false);
+
+  const toggleSortList = () => {
+    setIsOpened(!isOpened);
+  };
+
+  const handleSortTypeChange = (type: string) => {
+    dispatch(setSortType(type));
+    setIsOpened(false);
+  };
 
   return (
     <form className="places__sorting" action="#" method="get">
       <span className="places__sorting-caption">Sort by </span>
-      <span className="places__sorting-type" tabIndex={0}>
-                  Popular
+      <span
+        className="places__sorting-type"
+        tabIndex={0}
+        onClick={toggleSortList}
+      >
+        {currentSortType}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
-      <ul className="places__options places__options--custom places__options--opened">
+      <ul
+        className={`places__options places__options--custom ${
+          isOpened ? 'places__options--opened' : ''
+        }`}
+      >
         {sortTypes.map((type) => (
           <li
             key={type}
-            className={`places__option${type === currentSortType ? ' places__option--active' : ''}`}
+            className={`places__option${
+              type === currentSortType ? ' places__option--active' : ''
+            }`}
             tabIndex={0}
-            onClick={() => dispatch(setSortType(type))}
+            onClick={() => handleSortTypeChange(type)}
           >
             {type}
           </li>
