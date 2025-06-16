@@ -1,17 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { setCity, setOffers, setSortType } from './action';
-import { mockOffers } from '@/mocks/offers';
+import { SIX_CITIES } from '@/const';
+import { Offer } from '@/types/offers';
 
 const initialState = {
-  city: {
-    name: 'Paris',
-    location: {
-      latitude: 48.8566,
-      longitude: 2.3522,
-      zoom: 10
-    }
-  },
-  offers: mockOffers.filter((offer) => offer.city.name === 'Paris'),
+  city: SIX_CITIES[0],
+  offers: [] as Offer[],
   sortType: 'Popular'
 };
 

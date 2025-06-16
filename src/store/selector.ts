@@ -3,9 +3,15 @@ import { State } from '@/types/state';
 
 export const selectOffers = (state: State) => state.offers;
 export const selectSortType = (state: State) => state.sortType;
+export const selectCity = (state: State) => state.city;
+
+export const selectCityOffers = createSelector(
+  [selectOffers, selectCity],
+  (offers, city) => offers.filter((offer) => offer.city.name === city.name)
+);
 
 export const selectSortedOffers = createSelector(
-  [selectOffers, selectSortType],
+  [selectCityOffers, selectSortType],
   (offers, sortType) => {
     switch (sortType) {
       case 'Price: low to high':
