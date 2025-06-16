@@ -1,5 +1,7 @@
 import { useState, FormEvent, ChangeEvent, Fragment } from 'react';
 
+const MIN_COMMENT_LENGTH = 50;
+
 export default function CommentForm(): JSX.Element {
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState<string>('');
@@ -18,7 +20,7 @@ export default function CommentForm(): JSX.Element {
     console.log({ rating, comment });
   };
 
-  const isValid = rating !== null && comment.length >= 50;
+  const isValid = rating !== null && comment.length >= MIN_COMMENT_LENGTH;
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
