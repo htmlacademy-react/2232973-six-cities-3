@@ -40,3 +40,7 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export enum ApiRoute {
+  Offers ='/offers',
+  OfferById = '/offers/{offerId}',
+}

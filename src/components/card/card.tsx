@@ -31,7 +31,7 @@ export default function Card({
   onOfferHover,
   variant = 'vertical'
 }: CardProps): JSX.Element {
-  const { isPremium, price, title, type, rating, images} = offer;
+  const { isPremium, price, title, type, rating, previewImage} = offer;
   const ratingWidth = `${Math.round(rating) * 20}%`;
 
   const config = cardConfig[variant];
@@ -51,7 +51,7 @@ export default function Card({
         <Link to={`/offer/${offer.id}`}>
           <img
             className="place-card__image"
-            src={images[0]}
+            src={previewImage ? previewImage : '/img/no-image.png'}
             width={config.imageWidth}
             height={config.imageHeight}
             alt="Place image"

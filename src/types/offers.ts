@@ -24,6 +24,7 @@ export type Offer = {
   location: Location;
   isFavorite: boolean;
   isPremium: boolean;
+  previewImage: string;
   rating: number;
   description: string;
   bedrooms: number;

@@ -1,13 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { offersSlice, setOffers } from './reducer';
-import { mockOffers } from '@/mocks/offers';
+import { fetchOffers, offersReducer } from './offers-slice';
 import { createAPI } from '@/services/api';
 
 export const api = createAPI();
 
 export const store = configureStore({
   reducer: {
-    offers: offersSlice.reducer,
+    offers: offersReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -17,5 +16,5 @@ export const store = configureStore({
     })
 });
 
-store.dispatch(setOffers(mockOffers));
+store.dispatch(fetchOffers());
 

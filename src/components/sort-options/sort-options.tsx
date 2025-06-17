@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setSortType } from '@/store/reducer';
+import { setSortType } from '@/store/offers-slice';
 
 const sortTypes = [
   'Popular',

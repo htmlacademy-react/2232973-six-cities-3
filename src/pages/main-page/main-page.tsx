@@ -2,9 +2,9 @@ import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setCity } from '@/store/reducer';
+import { setCity } from '@/store/offers-slice';
 import SortOptions from '@/components/sort-options/sort-options';
-import { selectSortedOffers } from '@/store/selector';
+import { selectSortedOffers } from '@/store/selectors';
 import { SIX_CITIES } from '@/const';
 import { City } from '@/types/offers';
 
