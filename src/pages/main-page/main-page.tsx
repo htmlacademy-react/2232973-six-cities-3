@@ -7,11 +7,13 @@ import SortOptions from '@/components/sort-options/sort-options';
 import { selectSortedOffers } from '@/store/selectors';
 import { SIX_CITIES } from '@/const';
 import { City } from '@/types/offers';
+import Loader from '@/components/loader/loader';
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const selectedCity = useAppSelector((state) => state.offers.city);
   const currentOffers = useAppSelector(selectSortedOffers);
+  const isLoading = useAppSelector((state) => state.offers.isLoading);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -54,10 +56,12 @@ export default function MainPage(): JSX.Element {
             <b className="places__found">{currentOffers.length} places to stay in {selectedCity.name}</b>
             <SortOptions />
             <div className="cities__places-list places__list tabs__content">
-              <OffersList
-                offers={currentOffers}
-                onOfferHover={handleOfferHover}
-              />
+              {isLoading ?
+                <Loader /> :
+                <OffersList
+                  offers={currentOffers}
+                  onOfferHover={handleOfferHover}
+                />}
             </div>
           </section>
           <div className="cities__right-section">
