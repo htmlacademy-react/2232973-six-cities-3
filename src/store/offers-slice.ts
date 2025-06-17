@@ -6,6 +6,7 @@ import { AxiosInstance } from 'axios';
 type OffersState = {
   city: City;
   offers: Offer[];
+  specificOffer: Offer | null;
   sortType: string;
   isLoading: boolean;
   error: string | null;
@@ -14,12 +15,21 @@ type OffersState = {
 const initialState: OffersState = {
   city: SIX_CITIES[0],
   offers: [] as Offer[],
+  specificOffer: null,
   sortType: 'Popular',
   isLoading: false,
   error: null,
 };
 
-const fetchOffers = createAsyncThunk<Offer[],undefined, { extra: AxiosInstance }>(
+const fetchOfferById = createAsyncThunk<Offer, string, { extra: AxiosInstance }>(
+  'offers/fetchById',
+  async (offerId, { extra: api }) => {
+    const { data } = await api.get<Offer>(`${ApiRoute.Offers}/${offerId}`);
+    return data;
+  }
+);
+
+const fetchOffers = createAsyncThunk<Offer[], undefined, { extra: AxiosInstance }>(
   'offers/fetchOffers',
   async(_, { extra: api}) => {
     const {data} = await api.get<Offer[]>(ApiRoute.Offers);
@@ -36,6 +46,9 @@ const offersSlice = createSlice({
     },
     setSortType: (state, action: PayloadAction<string>) => {
       state.sortType = action.payload;
+    },
+    clearSpecificOffer: (state) => {
+      state.specificOffer = null;
     }
   },
   extraReducers: (builder) => {
@@ -51,34 +64,30 @@ const offersSlice = createSlice({
       .addCase(fetchOffers.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message || 'Failed to load offers';
+      })
+      .addCase(fetchOfferById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchOfferById.fulfilled, (state, action) => {
+        state.specificOffer = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(fetchOfferById.rejected, (state, action) => {
+        state.error = action.error.message || 'Failed to load offer details';
+        state.isLoading = false;
       });
   }
 });
 
 const offersReducer = offersSlice.reducer;
-const { setCity, setSortType } = offersSlice.actions;
+const { setCity, setSortType, clearSpecificOffer } = offersSlice.actions;
 
 export {
   offersReducer,
   setCity,
   setSortType,
   fetchOffers,
+  fetchOfferById,
+  clearSpecificOffer
 };
 
-// export const offersSlice = createSlice({
-//   name: 'offers',
-//   initialState,
-//   reducers: {
-//     setCity: (state, action: PayloadAction<City>) => {
-//       state.city = action.payload;
-//     },
-//     setOffers: (state, action: PayloadAction<Offer[]>) => {
-//       state.offers = action.payload;
-//     },
-//     setSortType: (state, action: PayloadAction<string>) => {
-//       state.sortType = action.payload;
-//     }
-//   },
-// });
-
-// export const { setCity, setOffers, setSortType } = offersSlice.actions;

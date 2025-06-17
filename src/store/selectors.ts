@@ -4,6 +4,7 @@ import { State } from '@/types/state';
 export const selectCity = (state: State) => state.offers.city;
 export const selectOffers = (state: State) => state.offers.offers;
 export const selectSortType = (state: State) => state.offers.sortType;
+export const selectSpecificOffer = (state: State) => state.offers.specificOffer;
 
 export const selectCityOffers = createSelector(
   [selectOffers, selectCity],

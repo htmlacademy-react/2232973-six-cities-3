@@ -1,20 +1,47 @@
 import { AuthorizationStatus } from '@/const';
-import { Offer } from '@/types/offers';
+// import { Offer } from '@/types/offers';
 import Map from '@/components/map/map';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page';
 import ReviewsList from '@/components/reviews-list/reviews-list';
 import { mockReviews } from '@/mocks/reviews';
 import OffersList from '@/components/offers-list';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectSortedOffers, selectSpecificOffer } from '@/store/selectors';
+import Loader from '@/components/loader/loader';
+import { useEffect } from 'react';
+import { clearSpecificOffer, fetchOfferById } from '@/store/offers-slice';
+import { capitalizeFirstLetter } from '@/common';
 
 type OfferPageProps = {
-  offers: Offer[];
   authorizationStatus: AuthorizationStatus;
 };
 
-export default function OfferPage({ offers, authorizationStatus }: OfferPageProps): JSX.Element {
-  const { id } = useParams<{ id: string }>();
-  const currentOffer = offers.find((offerItem) => offerItem.id === id);
+export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.Element {
+  const params = useParams();
+  const dispatch = useAppDispatch();
+  const offers = useAppSelector(selectSortedOffers);
+  const currentOffer = useAppSelector(selectSpecificOffer);
+  const isLoading = useAppSelector((state) => state.offers.isLoading);
+  const error = useAppSelector((state) => state.offers.error);
+
+  useEffect(() => {
+    if (params.id) {
+      dispatch(fetchOfferById(params.id));
+    }
+
+    return () => {
+      dispatch(clearSpecificOffer());
+    };
+  }, [params.id, dispatch]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <div className="error-message">Error: {error}</div>;
+  }
 
   if (!currentOffer) {
     return <NotFoundPage />;
@@ -23,6 +50,7 @@ export default function OfferPage({ offers, authorizationStatus }: OfferPageProp
   const offerReviews = mockReviews.filter((review) => review.offerId === currentOffer.id);
   const { title, images, type, bedrooms, maxAdults, price, rating, goods, description, host, isPremium } = currentOffer;
   const nearOffers = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, 3);
+
 
   return (
     <main className="page__main page__main--offer">
@@ -63,7 +91,7 @@ export default function OfferPage({ offers, authorizationStatus }: OfferPageProp
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
-                {type}
+                {capitalizeFirstLetter(type)}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
                 {bedrooms} Bedrooms
