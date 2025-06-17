@@ -34,7 +34,8 @@ export const mockOffers: Offer[] = [
       isPro: false
     },
     images: [PICTURE_URL, PICTURE_URL, PICTURE_URL],
-    maxAdults: 4
+    maxAdults: 4,
+    previewImage: ''
   },
   {
     id: '2',
@@ -85,7 +86,8 @@ export const mockOffers: Offer[] = [
     isFavorite: false,
     rating: 4.5,
     bedrooms: 1,
-    maxAdults: 3
+    maxAdults: 3,
+    previewImage: ''
   },
   {
     id: '3',
@@ -136,7 +138,8 @@ export const mockOffers: Offer[] = [
     isFavorite: false,
     rating: 3.5,
     bedrooms: 2,
-    maxAdults: 9
+    maxAdults: 9,
+    previewImage: ''
   },
   {
     id: '4',
@@ -179,6 +182,7 @@ export const mockOffers: Offer[] = [
     isFavorite: false,
     rating: 3.8,
     bedrooms: 1,
-    maxAdults: 1
+    maxAdults: 1,
+    previewImage: ''
   }
 ];
