@@ -1,4 +1,3 @@
-import { AuthorizationStatus } from '@/const';
 import Map from '@/components/map/map';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page';
@@ -6,7 +5,7 @@ import ReviewsList from '@/components/reviews-list/reviews-list';
 import { mockReviews } from '@/mocks/reviews';
 import OffersList from '@/components/offers-list';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectOfferPageData } from '@/store/selectors';
+import { selectAuthStatus, selectOfferPageData } from '@/store/selectors';
 import Loader from '@/components/loader/loader';
 import { useEffect } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
@@ -14,11 +13,7 @@ import { capitalizeFirstLetter } from '@/common';
 
 const MAX_NEARBY_OFFERS = 3;
 
-type OfferPageProps = {
-  authorizationStatus: AuthorizationStatus;
-};
-
-export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.Element {
+export default function OfferPage(): JSX.Element {
   const params = useParams();
   const dispatch = useAppDispatch();
 
@@ -28,6 +23,8 @@ export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.
     nearbyOffers,
     isNearbyLoading,
   } = useAppSelector(selectOfferPageData);
+
+  const authorizationStatus = useAppSelector(selectAuthStatus);
 
   useEffect(() => {
     if (params.id) {

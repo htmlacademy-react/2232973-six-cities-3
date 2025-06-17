@@ -9,7 +9,8 @@ export const selectErrorStatus = (state: State) => state.offers.error;
 export const selectSpecificOffer = (state: State) => state.offers.specificOffer;
 export const selectNearbyCards = (state: State) => state.offers.nearbyCards;
 export const selectNearbyLoadingStatus = (state: State) => state.offers.isNearbyLoading;
-
+export const selectAuthStatus = (state: State) => state.user.authorizationStatus;
+export const selectUser = (state: State) => state.user.user;
 
 export const selectCityOffers = createSelector(
   [selectOffers, selectCity],
