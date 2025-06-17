@@ -4,7 +4,12 @@ import { State } from '@/types/state';
 export const selectCity = (state: State) => state.offers.city;
 export const selectOffers = (state: State) => state.offers.offers;
 export const selectSortType = (state: State) => state.offers.sortType;
+export const selectLoadingStatus = (state: State) => state.offers.isLoading;
+export const selectErrorStatus = (state: State) => state.offers.error;
 export const selectSpecificOffer = (state: State) => state.offers.specificOffer;
+export const selectNearbyCards = (state: State) => state.offers.nearbyCards;
+export const selectNearbyLoadingStatus = (state: State) => state.offers.isNearbyLoading;
+
 
 export const selectCityOffers = createSelector(
   [selectOffers, selectCity],
@@ -25,4 +30,13 @@ export const selectSortedOffers = createSelector(
         return offers;
     }
   }
+);
+
+export const selectOfferPageData = createSelector(
+  [selectSpecificOffer, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
+  (specificOffer, nearbyOffers, isLoading, isNearbyLoading) => ({
+    specificOffer,
+    nearbyOffers,
+    isLoading,
+    isNearbyLoading})
 );

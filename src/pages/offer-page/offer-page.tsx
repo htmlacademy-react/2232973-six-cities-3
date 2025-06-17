@@ -6,12 +6,13 @@ import ReviewsList from '@/components/reviews-list/reviews-list';
 import { mockReviews } from '@/mocks/reviews';
 import OffersList from '@/components/offers-list';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectSortedOffers, selectSpecificOffer } from '@/store/selectors';
+import { selectOfferPageData } from '@/store/selectors';
 import Loader from '@/components/loader/loader';
 import { useEffect } from 'react';
-import { clearSpecificOffer, fetchOfferById } from '@/store/offers-slice';
+import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
 import { capitalizeFirstLetter } from '@/common';
-import { ErrorPage } from '../error-page/error-page';
+
+const MAX_NEARBY_OFFERS = 3;
 
 type OfferPageProps = {
   authorizationStatus: AuthorizationStatus;
@@ -20,27 +21,28 @@ type OfferPageProps = {
 export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.Element {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const offers = useAppSelector(selectSortedOffers);
-  const currentOffer = useAppSelector(selectSpecificOffer);
-  const isLoading = useAppSelector((state) => state.offers.isLoading);
-  const error = useAppSelector((state) => state.offers.error);
+
+  const {
+    specificOffer: currentOffer,
+    isLoading,
+    nearbyOffers,
+    isNearbyLoading,
+  } = useAppSelector(selectOfferPageData);
 
   useEffect(() => {
     if (params.id) {
       dispatch(fetchOfferById(params.id));
+      dispatch(fetchNearbyOffers(params.id));
     }
 
     return () => {
       dispatch(clearSpecificOffer());
+      dispatch(clearNearbyOffers());
     };
   }, [params.id, dispatch]);
 
   if (isLoading) {
     return <Loader />;
-  }
-
-  if (error) {
-    return <ErrorPage />;
   }
 
   if (!currentOffer) {
@@ -49,8 +51,6 @@ export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.
 
   const offerReviews = mockReviews.filter((review) => review.offerId === currentOffer.id);
   const { title, images, type, bedrooms, maxAdults, price, rating, goods, description, host, isPremium } = currentOffer;
-  const nearOffers = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, 3);
-
 
   return (
     <main className="page__main page__main--offer">
@@ -139,7 +139,7 @@ export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.
         <section className="offer__map map">
           <Map
             city={currentOffer.city}
-            offers={nearOffers}
+            offers={nearbyOffers.slice(0, MAX_NEARBY_OFFERS)}
             selectedOfferId={currentOffer.id}
           />
         </section>
@@ -148,7 +148,9 @@ export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList offers={nearOffers} variant="vertical" />
+            {isNearbyLoading ?
+              <Loader /> :
+              <OffersList offers={nearbyOffers.slice(0, MAX_NEARBY_OFFERS)} variant="vertical" />}
           </div>
         </section>
       </div>

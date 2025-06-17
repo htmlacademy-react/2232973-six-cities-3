@@ -10,6 +10,8 @@ type OffersState = {
   sortType: string;
   isLoading: boolean;
   error: string | null;
+  nearbyCards: Offer[];
+  isNearbyLoading: boolean;
 };
 
 const initialState: OffersState = {
@@ -19,7 +21,17 @@ const initialState: OffersState = {
   sortType: 'Popular',
   isLoading: false,
   error: null,
+  nearbyCards: [] as Offer[],
+  isNearbyLoading: false
 };
+
+const fetchOffers = createAsyncThunk<Offer[], undefined, { extra: AxiosInstance }>(
+  'offers/fetchOffers',
+  async(_, { extra: api}) => {
+    const {data} = await api.get<Offer[]>(ApiRoute.Offers);
+    return data;
+  }
+);
 
 const fetchOfferById = createAsyncThunk<Offer, string, { extra: AxiosInstance }>(
   'offers/fetchById',
@@ -29,10 +41,10 @@ const fetchOfferById = createAsyncThunk<Offer, string, { extra: AxiosInstance }>
   }
 );
 
-const fetchOffers = createAsyncThunk<Offer[], undefined, { extra: AxiosInstance }>(
-  'offers/fetchOffers',
-  async(_, { extra: api}) => {
-    const {data} = await api.get<Offer[]>(ApiRoute.Offers);
+const fetchNearbyOffers = createAsyncThunk<Offer[], string, { extra: AxiosInstance }>(
+  'offers/fetchNearby',
+  async (offerId, { extra: api }) => {
+    const { data } = await api.get<Offer[]>(`${ApiRoute.Offers}/${offerId}/nearby`);
     return data;
   }
 );
@@ -49,6 +61,9 @@ const offersSlice = createSlice({
     },
     clearSpecificOffer: (state) => {
       state.specificOffer = null;
+    },
+    clearNearbyOffers: (state) => {
+      state.nearbyCards = [];
     }
   },
   extraReducers: (builder) => {
@@ -75,12 +90,24 @@ const offersSlice = createSlice({
       .addCase(fetchOfferById.rejected, (state, action) => {
         state.error = action.error.message || 'Failed to load offer details';
         state.isLoading = false;
+      })
+      .addCase(fetchNearbyOffers.pending, (state) => {
+        state.isNearbyLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchNearbyOffers.fulfilled, (state, action) => {
+        state.isNearbyLoading = false;
+        state.nearbyCards = action.payload;
+      })
+      .addCase(fetchNearbyOffers.rejected, (state, action) => {
+        state.isNearbyLoading = false;
+        state.error = action.error.message || 'Failed to load offers';
       });
   }
 });
 
 const offersReducer = offersSlice.reducer;
-const { setCity, setSortType, clearSpecificOffer } = offersSlice.actions;
+const { setCity, setSortType, clearSpecificOffer, clearNearbyOffers } = offersSlice.actions;
 
 export {
   offersReducer,
@@ -88,6 +115,8 @@ export {
   setSortType,
   fetchOffers,
   fetchOfferById,
-  clearSpecificOffer
+  clearSpecificOffer,
+  fetchNearbyOffers,
+  clearNearbyOffers
 };
 
