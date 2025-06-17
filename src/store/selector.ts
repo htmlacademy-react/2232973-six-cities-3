@@ -1,9 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { State } from '@/types/state';
 
-export const selectOffers = (state: State) => state.offers;
-export const selectSortType = (state: State) => state.sortType;
-export const selectCity = (state: State) => state.city;
+export const selectCity = (state: State) => state.offers.city;
+export const selectOffers = (state: State) => state.offers.offers;
+export const selectSortType = (state: State) => state.offers.sortType;
 
 export const selectCityOffers = createSelector(
   [selectOffers, selectCity],

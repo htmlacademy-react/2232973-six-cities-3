@@ -1,7 +1,6 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers, setSortType } from './action';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SIX_CITIES } from '@/const';
-import { Offer } from '@/types/offers';
+import { City, Offer } from '@/types/offers';
 
 const initialState = {
   city: SIX_CITIES[0],
@@ -9,17 +8,20 @@ const initialState = {
   sortType: 'Popular'
 };
 
-const reducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(setCity, (state, action) => {
+export const offersSlice = createSlice({
+  name: 'offers',
+  initialState,
+  reducers: {
+    setCity: (state, action: PayloadAction<City>) => {
       state.city = action.payload;
-    })
-    .addCase(setOffers, (state, action) => {
+    },
+    setOffers: (state, action: PayloadAction<Offer[]>) => {
       state.offers = action.payload;
-    })
-    .addCase(setSortType, (state, action) => {
+    },
+    setSortType: (state, action: PayloadAction<string>) => {
       state.sortType = action.payload;
-    });
+    }
+  },
 });
 
-export {reducer};
+export const { setCity, setOffers, setSortType } = offersSlice.actions;

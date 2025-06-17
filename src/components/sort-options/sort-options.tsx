@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setSortType } from '@/store/action';
+import { setSortType } from '@/store/reducer';
 
 const sortTypes = [
   'Popular',
@@ -11,7 +11,7 @@ const sortTypes = [
 
 export default function SortOptions() {
   const dispatch = useAppDispatch();
-  const currentSortType = useAppSelector((state) => state.sortType);
+  const currentSortType = useAppSelector((state) => state.offers.sortType);
   const [isOpened, setIsOpened] = useState(false);
 
   const toggleSortList = () => {

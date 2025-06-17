@@ -2,7 +2,7 @@ import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setCity } from '@/store/action';
+import { setCity } from '@/store/reducer';
 import SortOptions from '@/components/sort-options/sort-options';
 import { selectSortedOffers } from '@/store/selector';
 import { SIX_CITIES } from '@/const';
@@ -10,7 +10,7 @@ import { City } from '@/types/offers';
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedCity = useAppSelector((state) => state.city);
+  const selectedCity = useAppSelector((state) => state.offers.city);
   const currentOffers = useAppSelector(selectSortedOffers);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
