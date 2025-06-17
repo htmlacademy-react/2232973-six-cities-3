@@ -1,5 +1,4 @@
 import { AuthorizationStatus } from '@/const';
-// import { Offer } from '@/types/offers';
 import Map from '@/components/map/map';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page';
@@ -12,6 +11,7 @@ import Loader from '@/components/loader/loader';
 import { useEffect } from 'react';
 import { clearSpecificOffer, fetchOfferById } from '@/store/offers-slice';
 import { capitalizeFirstLetter } from '@/common';
+import { ErrorPage } from '../error-page/error-page';
 
 type OfferPageProps = {
   authorizationStatus: AuthorizationStatus;
@@ -40,7 +40,7 @@ export default function OfferPage({ authorizationStatus }: OfferPageProps): JSX.
   }
 
   if (error) {
-    return <div className="error-message">Error: {error}</div>;
+    return <ErrorPage />;
   }
 
   if (!currentOffer) {

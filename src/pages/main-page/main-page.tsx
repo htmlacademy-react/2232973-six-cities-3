@@ -14,6 +14,7 @@ export default function MainPage(): JSX.Element {
   const selectedCity = useAppSelector((state) => state.offers.city);
   const currentOffers = useAppSelector(selectSortedOffers);
   const isLoading = useAppSelector((state) => state.offers.isLoading);
+  const error = useAppSelector((state) => state.offers.error);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -24,6 +25,10 @@ export default function MainPage(): JSX.Element {
   const handleCityClick = (city: City) => {
     dispatch(setCity(city));
   };
+
+  if (error) {
+    return <Loader />;
+  }
 
   return (
     <main className="page__main page__main--index">

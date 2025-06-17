@@ -57,7 +57,6 @@ export default function App({ offers }: AppProps): JSX.Element {
             path={AppRoute.Offer}
             element={
               <OfferPage
-                offers={offers}
                 authorizationStatus={authorizationStatus}
               />
             }
