@@ -11,6 +11,7 @@ export const selectNearbyCards = (state: State) => state.offers.nearbyCards;
 export const selectNearbyLoadingStatus = (state: State) => state.offers.isNearbyLoading;
 export const selectAuthStatus = (state: State) => state.user.authorizationStatus;
 export const selectUser = (state: State) => state.user.user;
+export const selectComments = (state: State) => state.comments.comments;
 
 export const selectCityOffers = createSelector(
   [selectOffers, selectCity],
@@ -34,9 +35,10 @@ export const selectSortedOffers = createSelector(
 );
 
 export const selectOfferPageData = createSelector(
-  [selectSpecificOffer, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
-  (specificOffer, nearbyOffers, isLoading, isNearbyLoading) => ({
+  [selectSpecificOffer, selectComments, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
+  (specificOffer, comments, nearbyOffers, isLoading, isNearbyLoading) => ({
     specificOffer,
+    comments,
     nearbyOffers,
     isLoading,
     isNearbyLoading})

@@ -2,7 +2,6 @@ import Map from '@/components/map/map';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page';
 import ReviewsList from '@/components/reviews-list/reviews-list';
-import { mockReviews } from '@/mocks/reviews';
 import OffersList from '@/components/offers-list';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthStatus, selectOfferPageData } from '@/store/selectors';
@@ -10,6 +9,7 @@ import Loader from '@/components/loader/loader';
 import { useEffect } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
 import { capitalizeFirstLetter } from '@/common';
+import { fetchComments } from '@/store/comments-slice';
 
 const MAX_NEARBY_OFFERS = 3;
 
@@ -19,6 +19,7 @@ export default function OfferPage(): JSX.Element {
 
   const {
     specificOffer: currentOffer,
+    comments,
     isLoading,
     nearbyOffers,
     isNearbyLoading,
@@ -30,6 +31,7 @@ export default function OfferPage(): JSX.Element {
     if (params.id) {
       dispatch(fetchOfferById(params.id));
       dispatch(fetchNearbyOffers(params.id));
+      dispatch(fetchComments(params.id));
     }
 
     return () => {
@@ -46,7 +48,6 @@ export default function OfferPage(): JSX.Element {
     return <NotFoundPage />;
   }
 
-  const offerReviews = mockReviews.filter((review) => review.offerId === currentOffer.id);
   const { title, images, type, bedrooms, maxAdults, price, rating, goods, description, host, isPremium } = currentOffer;
 
   return (
@@ -130,7 +131,7 @@ export default function OfferPage(): JSX.Element {
                 <p className="offer__text">{description}</p>
               </div>
             </div>
-            <ReviewsList authorizationStatus={authorizationStatus} reviews={offerReviews}/>
+            <ReviewsList authorizationStatus={authorizationStatus} reviews={comments}/>
           </div>
         </div>
         <section className="offer__map map">

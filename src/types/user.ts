@@ -1,4 +1,4 @@
-type User = {
+export type User = {
     name: string;
     avatarUrl: string;
     isPro: boolean;
@@ -6,9 +6,4 @@ type User = {
     token: string;
 };
 
-type UserAuth = Pick<User, 'email'> & { password: string };
-
-export {
-  type User,
-  type UserAuth,
-};
+export type UserAuth = Pick<User, 'email'> & { password: string };

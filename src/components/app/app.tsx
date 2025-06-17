@@ -8,15 +8,24 @@ import NotFoundPage from '@/pages/not-found-page';
 import PrivateRoute from '@/components/private-route/private-route';
 import Layout from '@/components/layout';
 import { Offer } from '@/types/offers';
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthStatus } from '@/store/selectors';
+import { useEffect } from 'react';
+import { checkUserStatus } from '@/store/user-slice';
+import { fetchOffers } from '@/store/offers-slice';
 
 type AppProps = {
   offers: Offer[];
 };
 
 export default function App({ offers }: AppProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(selectAuthStatus);
+
+  useEffect(() => {
+    dispatch(checkUserStatus());
+    dispatch(fetchOffers());
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
