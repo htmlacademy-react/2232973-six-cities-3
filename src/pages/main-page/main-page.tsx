@@ -2,17 +2,19 @@ import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { setCity, setOffers } from '@/store/action';
-import { mockOffers } from '@/mocks/offers';
+import { setCity } from '@/store/offers-slice';
 import SortOptions from '@/components/sort-options/sort-options';
-import { selectSortedOffers } from '@/store/selector';
-
-const SIX_CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'] as const;
+import { selectSortedOffers } from '@/store/selectors';
+import { SIX_CITIES } from '@/const';
+import { City } from '@/types/offers';
+import Loader from '@/components/loader/loader';
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const selectedCity = useAppSelector((state) => state.city.name);
-  const offers = useAppSelector(selectSortedOffers);
+  const selectedCity = useAppSelector((state) => state.offers.city);
+  const currentOffers = useAppSelector(selectSortedOffers);
+  const isLoading = useAppSelector((state) => state.offers.isLoading);
+  const error = useAppSelector((state) => state.offers.error);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -20,13 +22,13 @@ export default function MainPage(): JSX.Element {
     setSelectedOfferId(offerId);
   };
 
-  const handleCityClick = (cityName: string) => {
-    const cityObj = mockOffers.find((offer) => offer.city.name === cityName)?.city;
-    if (cityObj) {
-      dispatch(setCity(cityObj));
-      dispatch(setOffers(mockOffers.filter((offer) => offer.city.name === cityName)));
-    }
+  const handleCityClick = (city: City) => {
+    dispatch(setCity(city));
   };
+
+  if (error) {
+    return <Loader />;
+  }
 
   return (
     <main className="page__main page__main--index">
@@ -35,16 +37,16 @@ export default function MainPage(): JSX.Element {
         <section className="locations container">
           <ul className="locations__list tabs__list">
             {SIX_CITIES.map((city) => (
-              <li className="locations__item" key={city}>
+              <li className="locations__item" key={city.name}>
                 <a
-                  className={`locations__item-link tabs__item ${city === selectedCity ? 'tabs__item--active' : ''}`}
+                  className={`locations__item-link tabs__item ${city.name === selectedCity.name ? 'tabs__item--active' : ''}`}
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     handleCityClick(city);
                   }}
                 >
-                  <span>{city}</span>
+                  <span>{city.name}</span>
                 </a>
               </li>
             ))}
@@ -56,21 +58,23 @@ export default function MainPage(): JSX.Element {
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{offers.length} places to stay in {selectedCity}</b>
+            <b className="places__found">{currentOffers.length} places to stay in {selectedCity.name}</b>
             <SortOptions />
             <div className="cities__places-list places__list tabs__content">
-              <OffersList
-                offers={offers}
-                onOfferHover={handleOfferHover}
-              />
+              {isLoading ?
+                <Loader /> :
+                <OffersList
+                  offers={currentOffers}
+                  onOfferHover={handleOfferHover}
+                />}
             </div>
           </section>
           <div className="cities__right-section">
             <section className="cities__map map" style={{ backgroundImage: 'none' }}>
-              {offers.length > 0 && (
+              {currentOffers.length > 0 && (
                 <Map
-                  city={offers[0].city}
-                  offers={offers}
+                  city={selectedCity}
+                  offers={currentOffers}
                   selectedOfferId={selectedOfferId}
                 />
               )}

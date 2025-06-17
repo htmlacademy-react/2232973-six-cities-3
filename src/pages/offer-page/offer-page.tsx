@@ -1,28 +1,55 @@
-import { AuthorizationStatus } from '@/const';
-import { Offer } from '@/types/offers';
 import Map from '@/components/map/map';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from '../not-found-page';
 import ReviewsList from '@/components/reviews-list/reviews-list';
-import { mockReviews } from '@/mocks/reviews';
 import OffersList from '@/components/offers-list';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectAuthStatus, selectOfferPageData } from '@/store/selectors';
+import Loader from '@/components/loader/loader';
+import { useEffect } from 'react';
+import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
+import { capitalizeFirstLetter } from '@/common';
+import { clearComments, fetchComments } from '@/store/comments-slice';
 
-type OfferPageProps = {
-  offers: Offer[];
-  authorizationStatus: AuthorizationStatus;
-};
+const MAX_NEARBY_OFFERS = 3;
 
-export default function OfferPage({ offers, authorizationStatus }: OfferPageProps): JSX.Element {
-  const { id } = useParams<{ id: string }>();
-  const currentOffer = offers.find((offerItem) => offerItem.id === id);
+export default function OfferPage(): JSX.Element {
+  const params = useParams();
+  const dispatch = useAppDispatch();
+
+  const {
+    specificOffer: currentOffer,
+    comments,
+    isLoading,
+    nearbyOffers,
+    isNearbyLoading,
+  } = useAppSelector(selectOfferPageData);
+
+  const authorizationStatus = useAppSelector(selectAuthStatus);
+
+  useEffect(() => {
+    if (params.id) {
+      dispatch(fetchOfferById(params.id));
+      dispatch(fetchNearbyOffers(params.id));
+      dispatch(fetchComments(params.id));
+    }
+
+    return () => {
+      dispatch(clearSpecificOffer());
+      dispatch(clearNearbyOffers());
+      dispatch(clearComments());
+    };
+  }, [params.id, dispatch]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (!currentOffer) {
     return <NotFoundPage />;
   }
 
-  const offerReviews = mockReviews.filter((review) => review.offerId === currentOffer.id);
   const { title, images, type, bedrooms, maxAdults, price, rating, goods, description, host, isPremium } = currentOffer;
-  const nearOffers = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, 3);
 
   return (
     <main className="page__main page__main--offer">
@@ -63,7 +90,7 @@ export default function OfferPage({ offers, authorizationStatus }: OfferPageProp
             </div>
             <ul className="offer__features">
               <li className="offer__feature offer__feature--entire">
-                {type}
+                {capitalizeFirstLetter(type)}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
                 {bedrooms} Bedrooms
@@ -105,13 +132,13 @@ export default function OfferPage({ offers, authorizationStatus }: OfferPageProp
                 <p className="offer__text">{description}</p>
               </div>
             </div>
-            <ReviewsList authorizationStatus={authorizationStatus} reviews={offerReviews}/>
+            <ReviewsList authorizationStatus={authorizationStatus} reviews={comments} offerId={params.id}/>
           </div>
         </div>
         <section className="offer__map map">
           <Map
             city={currentOffer.city}
-            offers={nearOffers}
+            offers={nearbyOffers.slice(0, MAX_NEARBY_OFFERS)}
             selectedOfferId={currentOffer.id}
           />
         </section>
@@ -120,7 +147,9 @@ export default function OfferPage({ offers, authorizationStatus }: OfferPageProp
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            <OffersList offers={nearOffers} variant="vertical" />
+            {isNearbyLoading ?
+              <Loader /> :
+              <OffersList offers={nearbyOffers.slice(0, MAX_NEARBY_OFFERS)} variant="vertical" />}
           </div>
         </section>
       </div>

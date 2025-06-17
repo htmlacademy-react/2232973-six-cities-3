@@ -1,5 +1,5 @@
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
-import { AppRoute } from '@/const';
+import { AppRoute, AuthorizationStatus } from '@/const';
 import FavouritesPage from '@/pages/favourites-page';
 import LoginPage from '@/pages/login-page';
 import OfferPage from '@/pages/offer-page';
@@ -7,15 +7,25 @@ import MainPage from '@/pages/main-page';
 import NotFoundPage from '@/pages/not-found-page';
 import PrivateRoute from '@/components/private-route/private-route';
 import Layout from '@/components/layout';
-import { getAuthorizationStatus } from '@/autharization-status';
 import { Offer } from '@/types/offers';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectAuthStatus } from '@/store/selectors';
+import { useEffect } from 'react';
+import { checkUserStatus } from '@/store/user-slice';
+import { fetchOffers } from '@/store/offers-slice';
 
 type AppProps = {
   offers: Offer[];
 };
 
 export default function App({ offers }: AppProps): JSX.Element {
-  const authorizationStatus = getAuthorizationStatus();
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(selectAuthStatus);
+
+  useEffect(() => {
+    dispatch(checkUserStatus());
+    dispatch(fetchOffers());
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
@@ -34,8 +44,8 @@ export default function App({ offers }: AppProps): JSX.Element {
             path={AppRoute.Login}
             element={(
               <PrivateRoute
-                authorizationStatus={authorizationStatus}
-                isReverse
+                condition={authorizationStatus === AuthorizationStatus.NoAuth}
+                navigateTo={AppRoute.Root}
               >
                 <LoginPage />
               </PrivateRoute>
@@ -45,7 +55,8 @@ export default function App({ offers }: AppProps): JSX.Element {
             path={AppRoute.Favourites}
             element={
               <PrivateRoute
-                authorizationStatus={authorizationStatus}
+                condition={authorizationStatus === AuthorizationStatus.Auth}
+                navigateTo={AppRoute.Login}
               >
                 <FavouritesPage
                   offers={offers}
@@ -56,10 +67,7 @@ export default function App({ offers }: AppProps): JSX.Element {
           <Route
             path={AppRoute.Offer}
             element={
-              <OfferPage
-                offers={offers}
-                authorizationStatus={authorizationStatus}
-              />
+              <OfferPage />
             }
           />
           <Route

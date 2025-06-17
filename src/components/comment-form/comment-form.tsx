@@ -1,27 +1,58 @@
+import { useAppDispatch } from '@/hooks';
+import { postComment } from '@/store/comments-slice';
 import { useState, FormEvent, ChangeEvent, Fragment } from 'react';
 
-export default function CommentForm(): JSX.Element {
-  const [rating, setRating] = useState<number | null>(null);
-  const [comment, setComment] = useState<string>('');
+const MIN_COMMENT_LENGTH = 50;
 
-  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setRating(Number(evt.target.value));
-  };
+type CommentFormProps = {
+  offerId: string | undefined;
+};
 
-  const handleCommentChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(evt.target.value);
+export default function CommentForm({ offerId }: CommentFormProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const [isSending, setIsSending] = useState(false);
+  const [formData, setFormData] = useState<{
+    rating: number | null;
+    reviewText: string;
+  }>({rating: null, reviewText: ''});
+
+  const handleChange = (evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = evt.target;
+    setFormData({
+      ...formData,
+      [name]: name === 'rating' ? Number(value) : value
+    });
   };
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log({ rating, comment });
+    if (!offerId || isSending || !formData.rating || formData.reviewText.length < MIN_COMMENT_LENGTH) {
+      return;
+    }
+
+    setIsSending(true);
+    try {
+      void dispatch(postComment({
+        offerId,
+        comment: formData.reviewText,
+        rating: formData.rating,
+      })).unwrap();
+      setFormData({ rating: null, reviewText: ''});
+    } finally {
+      setIsSending(false);
+    }
   };
 
-  const isValid = rating !== null && comment.length >= 50;
+  const isValid = formData.rating !== null && formData.reviewText.length >= MIN_COMMENT_LENGTH && !isSending;
+  const { rating, reviewText } = formData;
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleSubmit}>
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {[5, 4, 3, 2, 1].map((value) => (
@@ -33,7 +64,7 @@ export default function CommentForm(): JSX.Element {
               id={`${value}-stars`}
               type="radio"
               checked={rating === value}
-              onChange={handleRatingChange}
+              onChange={handleChange}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -51,18 +82,20 @@ export default function CommentForm(): JSX.Element {
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
-        name="review"
-        value={comment}
-        onChange={handleCommentChange}
+        name="reviewText"
+        value={reviewText}
+        onChange={handleChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
-      >
-      </textarea>
-
+      />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{MIN_COMMENT_LENGTH} characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!isValid}>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={!isValid}
+        >
           Submit
         </button>
       </div>

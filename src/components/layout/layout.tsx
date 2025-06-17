@@ -1,12 +1,22 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '@/const';
 import { getLayoutState } from './utils';
-import { getAuthorizationStatus } from '@/autharization-status';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectAuthStatus, selectUser } from '@/store/selectors';
+import { logoutUser } from '@/store/user-slice';
 
 export default function Layout(): JSX.Element {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser, shouldRenderFooter } = getLayoutState(pathname as AppRoute);
-  const authorizationStatus = getAuthorizationStatus();
+  const authorizationStatus = useAppSelector(selectAuthStatus);
+  const user = useAppSelector(selectUser);
+  const dispatch = useAppDispatch();
+
+  const handleSignOutClick = (evt: React.MouseEvent) => {
+    evt.preventDefault();
+    dispatch(logoutUser());
+  };
+
 
   return (
     <div className={`page${rootClassName}`}>
@@ -14,9 +24,9 @@ export default function Layout(): JSX.Element {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className={`header__logo-link${linkClassName}`}>
+              <Link className={`header__logo-link${linkClassName}`} to={AppRoute.Root}>
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
+              </Link>
             </div>
             {
               shouldRenderUser ? (
@@ -31,7 +41,7 @@ export default function Layout(): JSX.Element {
                         </div>
                         {authorizationStatus === AuthorizationStatus.Auth ? (
                           <>
-                            <span className="header__user-name user__name">Oliver.conner</span>
+                            <span className="header__user-name user__name">{user?.email}</span>
                             <span className="header__favorite-count">3</span>
                           </>
                         ) : <span className="header__login">Sign in</span>}
@@ -39,7 +49,7 @@ export default function Layout(): JSX.Element {
                     </li>
                     {authorizationStatus === AuthorizationStatus.Auth ? (
                       <li className="header__nav-item">
-                        <a className="header__nav-link" href="#">
+                        <a className="header__nav-link" href="#" onClick={handleSignOutClick}>
                           <span className="header__signout">Sign out</span>
                         </a>
                       </li>

@@ -1,3 +1,4 @@
+import { formatDateToMonthYear } from '@/common';
 import { Review } from '@/types/reviews';
 
 type ReviewItemProps = {
@@ -31,7 +32,7 @@ export default function ReviewItem({ review }: ReviewItemProps): JSX.Element {
           </div>
         </div>
         <p className="reviews__text">{comment}</p>
-        <time className="reviews__time" dateTime={date}>Aprilll 2019</time>
+        <time className="reviews__time" dateTime={date}>{formatDateToMonthYear(date)}</time>
       </div>
     </li>
   );

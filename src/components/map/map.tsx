@@ -26,21 +26,30 @@ const highlightedIcon = leaflet.icon({
 function Map({ city, offers, selectedOfferId }: MapProps): JSX.Element {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  const markersLayer = useRef<leaflet.LayerGroup | null>(null);
 
   useEffect(() => {
     if (map) {
+      if (!markersLayer.current) {
+        markersLayer.current = leaflet.layerGroup().addTo(map);
+      }
+      markersLayer.current.clearLayers();
+
       offers.forEach((offer) => {
         leaflet
-          .marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude,
-          }, {
-            icon: offer.id === selectedOfferId ? highlightedIcon : defaultCustomIcon,
-          })
-          .addTo(map);
+          .marker(
+            {
+              lat: offer.location.latitude,
+              lng: offer.location.longitude,
+            },
+            {
+              icon: offer.id === selectedOfferId ? highlightedIcon : defaultCustomIcon,
+            }
+          )
+          .addTo(markersLayer.current!);
       });
     }
-  }, [map, offers, selectedOfferId]);
+  }, [map, offers, selectedOfferId, city]);
 
   return (
     <div
