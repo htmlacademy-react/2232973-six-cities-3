@@ -6,9 +6,10 @@ import { AuthorizationStatus } from '@/const';
 type ReviewListProps = {
   reviews: Review[];
   authorizationStatus: AuthorizationStatus;
+  offerId: string | undefined;
 }
 
-export default function ReviewsList({ reviews, authorizationStatus }: ReviewListProps): JSX.Element {
+export default function ReviewsList({ reviews, authorizationStatus, offerId }: ReviewListProps): JSX.Element {
 
   return (
     <section className="offer__reviews reviews">
@@ -17,7 +18,7 @@ export default function ReviewsList({ reviews, authorizationStatus }: ReviewList
         {reviews.map((review) => (
           <ReviewItem key={review.id} review={review} />
         ))}
-        {authorizationStatus === AuthorizationStatus.Auth && <CommentForm />}
+        {authorizationStatus === AuthorizationStatus.Auth && <CommentForm offerId={offerId} />}
       </ul>
     </section>
   );

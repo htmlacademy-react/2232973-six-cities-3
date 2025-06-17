@@ -12,3 +12,12 @@ export type Review = {
   rating: number;
   offerId: string;
 }
+
+export type NewReview = {
+  comment: string;
+  rating: number;
+}
+
+export type ReviewAuth = NewReview & {
+  offerId: string;
+}

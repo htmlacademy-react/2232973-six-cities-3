@@ -9,7 +9,7 @@ import Loader from '@/components/loader/loader';
 import { useEffect } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
 import { capitalizeFirstLetter } from '@/common';
-import { fetchComments } from '@/store/comments-slice';
+import { clearComments, fetchComments } from '@/store/comments-slice';
 
 const MAX_NEARBY_OFFERS = 3;
 
@@ -37,6 +37,7 @@ export default function OfferPage(): JSX.Element {
     return () => {
       dispatch(clearSpecificOffer());
       dispatch(clearNearbyOffers());
+      dispatch(clearComments());
     };
   }, [params.id, dispatch]);
 
@@ -131,7 +132,7 @@ export default function OfferPage(): JSX.Element {
                 <p className="offer__text">{description}</p>
               </div>
             </div>
-            <ReviewsList authorizationStatus={authorizationStatus} reviews={comments}/>
+            <ReviewsList authorizationStatus={authorizationStatus} reviews={comments} offerId={params.id}/>
           </div>
         </div>
         <section className="offer__map map">
