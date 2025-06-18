@@ -36,10 +36,9 @@ export const selectSortedOffers = createSelector(
 );
 
 export const selectOfferPageData = createSelector(
-  [selectSpecificOffer, selectComments, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
-  (specificOffer, comments, nearbyOffers, isLoading, isNearbyLoading) => ({
+  [selectSpecificOffer, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
+  (specificOffer, nearbyOffers, isLoading, isNearbyLoading) => ({
     specificOffer,
-    comments,
     nearbyOffers,
     isLoading,
     isNearbyLoading})

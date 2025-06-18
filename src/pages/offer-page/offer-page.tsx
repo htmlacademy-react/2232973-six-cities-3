@@ -4,7 +4,7 @@ import NotFoundPage from '../not-found-page';
 import ReviewsList from '@/components/reviews-list/reviews-list';
 import OffersList from '@/components/offers-list';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectAuthStatus, selectOfferPageData } from '@/store/selectors';
+import { selectAuthStatus, selectOfferPageData, selectSortedComments } from '@/store/selectors';
 import Loader from '@/components/loader/loader';
 import { useEffect } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
@@ -19,12 +19,12 @@ export default function OfferPage(): JSX.Element {
 
   const {
     specificOffer: currentOffer,
-    comments,
     isLoading,
     nearbyOffers,
     isNearbyLoading,
   } = useAppSelector(selectOfferPageData);
 
+  const comments = useAppSelector(selectSortedComments);
   const authorizationStatus = useAppSelector(selectAuthStatus);
 
   useEffect(() => {
