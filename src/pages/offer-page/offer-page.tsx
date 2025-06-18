@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
 import { capitalizeFirstLetter } from '@/common';
 import { clearComments, fetchComments } from '@/store/comments-slice';
+import { FavouriteButton } from '@/components/favourite-button/favourite-button';
 
 const MAX_NEARBY_OFFERS = 3;
 
@@ -74,12 +75,11 @@ export default function OfferPage(): JSX.Element {
             )}
             <div className="offer__name-wrapper">
               <h1 className="offer__name">{title}</h1>
-              <button className="offer__bookmark-button button" type="button">
-                <svg className="offer__bookmark-icon" width="31" height="33">
-                  <use xlinkHref="#icon-bookmark"></use>
-                </svg>
-                <span className="visually-hidden">To bookmarks</span>
-              </button>
+              <FavouriteButton
+                offerId={currentOffer.id}
+                isFavorite={currentOffer.isFavorite}
+                fullcard
+              />
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">

@@ -32,22 +32,31 @@ export default function FavouritesPage(): JSX.Element {
       <div className="page__favorites-container container">
         <section className="favorites">
           <h1 className="favorites__title">Saved listing</h1>
-          <ul className="favorites__list">
-            {Object.entries(groupedOffers).map(([cityName, cityOffers]) => (
-              <li className="favorites__locations-items" key={cityName}>
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>{cityName}</span>
-                    </a>
+          {offers.length > 0 ? (
+            <ul className="favorites__list">
+              {Object.entries(groupedOffers).map(([cityName, cityOffers]) => (
+                <li className="favorites__locations-items" key={cityName}>
+                  <div className="favorites__locations locations locations--current">
+                    <div className="locations__item">
+                      <a className="locations__item-link" href="#">
+                        <span>{cityName}</span>
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <div className="favorites__places">
-                  <OffersList offers={cityOffers} variant="horizontal" />
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <div className="favorites__places">
+                    <OffersList offers={cityOffers} variant="horizontal" />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="favorites__status-wrapper">
+              <b className="favorites__status">Nothing yet saved.</b>
+              <p className="favorites__status-description">
+                Save properties to narrow down search or plan your future trips.
+              </p>
+            </div>
+          )}
         </section>
       </div>
     </main>
