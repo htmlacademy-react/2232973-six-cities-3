@@ -1,9 +1,9 @@
 import OffersList from '@/components/offers-list';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { fetchFavourites } from '@/store/offers-slice';
+import { selectFavourites } from '@/store/selectors';
 import { Offer } from '@/types/offers';
-
-type FavouritesPageProps = {
-  offers: Offer[];
-};
+import { useEffect } from 'react';
 
 function groupOffersByCity(offers: Offer[]): Record<string, Offer[]> {
   return offers.reduce<Record<string, Offer[]>>((acc, offer) => {
@@ -17,7 +17,14 @@ function groupOffersByCity(offers: Offer[]): Record<string, Offer[]> {
 }
 
 
-export default function FavouritesPage({offers}: FavouritesPageProps): JSX.Element {
+export default function FavouritesPage(): JSX.Element {
+  const offers = useAppSelector(selectFavourites);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavourites());
+  }, [dispatch]);
+
   const groupedOffers = groupOffersByCity(offers);
 
   return (
