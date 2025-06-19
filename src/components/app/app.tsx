@@ -7,18 +7,14 @@ import MainPage from '@/pages/main-page';
 import NotFoundPage from '@/pages/not-found-page';
 import PrivateRoute from '@/components/private-route/private-route';
 import Layout from '@/components/layout';
-import { Offer } from '@/types/offers';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthStatus } from '@/store/selectors';
 import { useEffect } from 'react';
 import { checkUserStatus } from '@/store/user-slice';
 import { fetchOffers } from '@/store/offers-slice';
 
-type AppProps = {
-  offers: Offer[];
-};
 
-export default function App({ offers }: AppProps): JSX.Element {
+export default function App(): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(selectAuthStatus);
 
@@ -58,9 +54,7 @@ export default function App({ offers }: AppProps): JSX.Element {
                 condition={authorizationStatus === AuthorizationStatus.Auth}
                 navigateTo={AppRoute.Login}
               >
-                <FavouritesPage
-                  offers={offers}
-                />
+                <FavouritesPage />
               </PrivateRoute>
             }
           />

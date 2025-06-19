@@ -13,6 +13,7 @@ export const selectAuthStatus = (state: State) => state.user.authorizationStatus
 export const selectUser = (state: State) => state.user.user;
 export const selectComments = (state: State) => state.comments.comments;
 export const selectReviewSending = (state: State) => state.comments.isSending;
+export const selectFavourites = (state: State) => state.offers.favourites;
 
 export const selectCityOffers = createSelector(
   [selectOffers, selectCity],
@@ -36,10 +37,9 @@ export const selectSortedOffers = createSelector(
 );
 
 export const selectOfferPageData = createSelector(
-  [selectSpecificOffer, selectComments, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
-  (specificOffer, comments, nearbyOffers, isLoading, isNearbyLoading) => ({
+  [selectSpecificOffer, selectNearbyCards, selectLoadingStatus, selectNearbyLoadingStatus],
+  (specificOffer, nearbyOffers, isLoading, isNearbyLoading) => ({
     specificOffer,
-    comments,
     nearbyOffers,
     isLoading,
     isNearbyLoading})
