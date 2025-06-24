@@ -1,11 +1,12 @@
 import { formatDateToMonthYear } from '@/common';
 import { Review } from '@/types/reviews';
+import { memo } from 'react';
 
 type ReviewItemProps = {
   review: Review;
 }
 
-export default function ReviewItem({ review }: ReviewItemProps): JSX.Element {
+export const ReviewItem = memo(({ review }: ReviewItemProps): JSX.Element => {
   const { user, comment, date, rating } = review;
   const ratingWidth = `${Math.round(rating) * 20}%`;
 
@@ -36,4 +37,8 @@ export default function ReviewItem({ review }: ReviewItemProps): JSX.Element {
       </div>
     </li>
   );
-}
+});
+
+ReviewItem.displayName = 'ReviewItem';
+
+export default ReviewItem;

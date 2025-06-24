@@ -4,8 +4,9 @@ import { getLayoutState } from './utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthStatus, selectFavourites, selectUser } from '@/store/selectors';
 import { logoutUser } from '@/store/user-slice';
+import { memo } from 'react';
 
-export default function Layout(): JSX.Element {
+export const Layout = memo((): JSX.Element => {
   const { pathname } = useLocation();
   const { rootClassName, linkClassName, shouldRenderUser, shouldRenderFooter } = getLayoutState(pathname as AppRoute);
   const authorizationStatus = useAppSelector(selectAuthStatus);
@@ -72,4 +73,8 @@ export default function Layout(): JSX.Element {
       ) : null}
     </div>
   );
-}
+});
+
+Layout.displayName = 'Layout';
+
+export default Layout;

@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/hooks';
 import { postComment } from '@/store/comments-slice';
-import { useState, FormEvent, ChangeEvent, Fragment } from 'react';
+import { useState, FormEvent, ChangeEvent, Fragment, memo } from 'react';
 
 const MIN_COMMENT_LENGTH = 50;
 
@@ -8,7 +8,7 @@ type CommentFormProps = {
   offerId: string | undefined;
 };
 
-export default function CommentForm({ offerId }: CommentFormProps): JSX.Element {
+export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState<{
@@ -101,4 +101,8 @@ export default function CommentForm({ offerId }: CommentFormProps): JSX.Element 
       </div>
     </form>
   );
-}
+});
+
+CommentForm.displayName = 'CommentForm';
+
+export default CommentForm;

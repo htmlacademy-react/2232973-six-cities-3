@@ -6,7 +6,7 @@ import OffersList from '@/components/offers-list';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthStatus, selectOfferPageData, selectSortedComments } from '@/store/selectors';
 import Loader from '@/components/loader/loader';
-import { useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
 import { capitalizeFirstLetter } from '@/common';
 import { clearComments, fetchComments } from '@/store/comments-slice';
@@ -14,7 +14,7 @@ import { FavouriteButton } from '@/components/favourite-button/favourite-button'
 
 const MAX_NEARBY_OFFERS = 3;
 
-export default function OfferPage(): JSX.Element {
+export const OfferPage = memo((): JSX.Element => {
   const params = useParams();
   const dispatch = useAppDispatch();
 
@@ -41,6 +41,11 @@ export default function OfferPage(): JSX.Element {
       dispatch(clearComments());
     };
   }, [params.id, dispatch]);
+
+  const limitedNearbyOffers = useMemo(
+    () => nearbyOffers.slice(0, MAX_NEARBY_OFFERS),
+    [nearbyOffers]
+  );
 
   if (isLoading) {
     return <Loader />;
@@ -138,7 +143,7 @@ export default function OfferPage(): JSX.Element {
         <section className="offer__map map">
           <Map
             city={currentOffer.city}
-            offers={nearbyOffers.slice(0, MAX_NEARBY_OFFERS)}
+            offers={limitedNearbyOffers}
             selectedOfferId={currentOffer.id}
           />
         </section>
@@ -149,10 +154,14 @@ export default function OfferPage(): JSX.Element {
           <div className="near-places__list places__list">
             {isNearbyLoading ?
               <Loader /> :
-              <OffersList offers={nearbyOffers.slice(0, MAX_NEARBY_OFFERS)} variant="vertical" />}
+              <OffersList offers={limitedNearbyOffers} variant="vertical" />}
           </div>
         </section>
       </div>
     </main>
   );
-}
+});
+
+OfferPage.displayName = 'OfferPage';
+
+export default OfferPage;
