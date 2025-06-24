@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAuthStatus } from '@/store/selectors';
 import { useEffect } from 'react';
 import { checkUserStatus } from '@/store/user-slice';
-import { fetchOffers } from '@/store/offers-slice';
+import { fetchFavourites, fetchOffers } from '@/store/offers-slice';
 
 
 export default function App(): JSX.Element {
@@ -21,6 +21,7 @@ export default function App(): JSX.Element {
   useEffect(() => {
     dispatch(checkUserStatus());
     dispatch(fetchOffers());
+    dispatch(fetchFavourites());
   }, [dispatch]);
 
   return (

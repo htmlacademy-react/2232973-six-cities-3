@@ -1,12 +1,13 @@
 import { useAppDispatch } from '@/hooks';
 import { toggleFavourite } from '@/store/offers-slice';
+import { memo } from 'react';
 
 type FavouriteButtonProps = {
   offerId: string;
   isFavorite: boolean;
   fullcard?: boolean;
 }
-export function FavouriteButton ({ offerId, isFavorite, fullcard = false }: FavouriteButtonProps): JSX.Element {
+export const FavouriteButton = memo(({ offerId, isFavorite, fullcard = false }: FavouriteButtonProps): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
@@ -31,5 +32,9 @@ export function FavouriteButton ({ offerId, isFavorite, fullcard = false }: Favo
       </span>
     </button>
   );
-}
+});
+
+
+FavouriteButton.displayName = 'FavouriteButton';
+
 

@@ -2,6 +2,7 @@ import { Offer } from '@/types/offers';
 import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter } from '@/common';
 import { FavouriteButton } from '../favourite-button/favourite-button';
+import { memo } from 'react';
 
 
 type CardProps = {
@@ -28,11 +29,11 @@ const cardConfig = {
 } as const;
 
 
-export default function Card({
+export const Card = memo(({
   offer,
   onOfferHover,
   variant = 'vertical'
-}: CardProps): JSX.Element {
+}: CardProps): JSX.Element => {
   const { isPremium, price, title, type, rating, previewImage} = offer;
   const ratingWidth = `${Math.round(rating) * 20}%`;
 
@@ -84,4 +85,8 @@ export default function Card({
       </div>
     </article>
   );
-}
+});
+
+Card.displayName = 'Card';
+
+export default Card;

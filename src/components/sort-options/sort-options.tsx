@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setSortType } from '@/store/offers-slice';
 
@@ -9,7 +9,7 @@ const sortTypes = [
   'Top rated first',
 ];
 
-export default function SortOptions() {
+export const SortOptions = memo((): JSX.Element => {
   const dispatch = useAppDispatch();
   const currentSortType = useAppSelector((state) => state.offers.sortType);
   const [isOpened, setIsOpened] = useState(false);
@@ -56,4 +56,8 @@ export default function SortOptions() {
       </ul>
     </form>
   );
-}
+});
+
+SortOptions.displayName = 'SortOptions';
+
+export default SortOptions;
