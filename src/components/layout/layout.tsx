@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '@/const';
 import { getLayoutState } from './utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectAuthStatus, selectUser } from '@/store/selectors';
+import { selectAuthStatus, selectFavourites, selectUser } from '@/store/selectors';
 import { logoutUser } from '@/store/user-slice';
 
 export default function Layout(): JSX.Element {
@@ -11,6 +11,7 @@ export default function Layout(): JSX.Element {
   const authorizationStatus = useAppSelector(selectAuthStatus);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
+  const favouritesCount = useAppSelector(selectFavourites).length;
 
   const handleSignOutClick = (evt: React.MouseEvent) => {
     evt.preventDefault();
@@ -42,7 +43,7 @@ export default function Layout(): JSX.Element {
                         {authorizationStatus === AuthorizationStatus.Auth ? (
                           <>
                             <span className="header__user-name user__name">{user?.email}</span>
-                            <span className="header__favorite-count">3</span>
+                            <span className="header__favorite-count">{favouritesCount}</span>
                           </>
                         ) : <span className="header__login">Sign in</span>}
                       </Link>
