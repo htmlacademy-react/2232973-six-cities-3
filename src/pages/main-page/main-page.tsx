@@ -8,6 +8,7 @@ import { selectSortedOffers } from '@/store/selectors';
 import { SIX_CITIES } from '@/const';
 import { City } from '@/types/offers';
 import Loader from '@/components/loader/loader';
+import EmptyMain from '@/components/empty-main/empty-main';
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -56,30 +57,36 @@ export default function MainPage(): JSX.Element {
 
       <div className="cities">
         <div className="cities__places-container container">
-          <section className="cities__places places">
-            <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{currentOffers.length} places to stay in {selectedCity.name}</b>
-            <SortOptions />
-            <div className="cities__places-list places__list tabs__content">
-              {isLoading ?
-                <Loader /> :
-                <OffersList
-                  offers={currentOffers}
-                  onOfferHover={handleOfferHover}
-                />}
-            </div>
-          </section>
-          <div className="cities__right-section">
-            <section className="cities__map map" style={{ backgroundImage: 'none' }}>
-              {currentOffers.length > 0 && (
-                <Map
-                  city={selectedCity}
-                  offers={currentOffers}
-                  selectedOfferId={selectedOfferId}
-                />
-              )}
-            </section>
-          </div>
+          {currentOffers.length === 0 ? (
+            <EmptyMain city={selectedCity.name} />
+          ) : (
+            <>
+              <section className="cities__places places">
+                <h2 className="visually-hidden">Places</h2>
+                <b className="places__found">{currentOffers.length} places to stay in {selectedCity.name}</b>
+                <SortOptions />
+                <div className="cities__places-list places__list tabs__content">
+                  {isLoading ?
+                    <Loader /> :
+                    <OffersList
+                      offers={currentOffers}
+                      onOfferHover={handleOfferHover}
+                    />}
+                </div>
+              </section>
+              <div className="cities__right-section">
+                <section className="cities__map map" style={{ backgroundImage: 'none' }}>
+                  {currentOffers.length > 0 && (
+                    <Map
+                      city={selectedCity}
+                      offers={currentOffers}
+                      selectedOfferId={selectedOfferId}
+                    />
+                  )}
+                </section>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </main>
