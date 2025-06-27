@@ -32,7 +32,15 @@ const Header = memo(() => {
                   className="header__nav-link header__nav-link--profile"
                   to={AppRoute.Favourites}
                 >
-                  <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                  <div className="header__avatar-wrapper user__avatar-wrapper">
+                    {authorizationStatus === AuthorizationStatus.Auth && user?.avatarUrl && (
+                      <img
+                        src={user.avatarUrl}
+                        alt="User avatar"
+                        className="header__avatar user__avatar"
+                      />
+                    )}
+                  </div>
                   {authorizationStatus === AuthorizationStatus.Auth ? (
                     <>
                       <span className="header__user-name user__name">{user?.email}</span>
