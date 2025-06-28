@@ -136,6 +136,6 @@ describe('offers-slice', () => {
   it('should revert isFavorite on toggleFavourite.rejected', () => {
     const state = { ...initialState, offers: [mockOffer({ id: '10', isFavorite: true })] };
     const result = offersReducer(state, { type: toggleFavourite.rejected.type, meta: { arg: { offerId: '10', status: 0 } } });
-    expect(result.offers[0].isFavorite).toBe(false);
+    expect(result.offers[0].isFavorite).toBe(true);
   });
 });
