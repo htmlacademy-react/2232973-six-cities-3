@@ -1,6 +1,6 @@
 import OffersList from '@/components/offers-list';
 import Map from '@/components/map';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCity } from '@/store/offers-slice';
 import SortOptions from '@/components/sort-options/sort-options';
@@ -18,9 +18,9 @@ export default function MainPage(): JSX.Element {
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
-  const handleOfferHover = (offerId: string | null) => {
+  const handleOfferHover = useCallback((offerId: string | null) => {
     setSelectedOfferId(offerId);
-  };
+  }, []);
 
   const handleCityClick = (city: City) => {
     dispatch(setCity(city));
@@ -65,12 +65,10 @@ export default function MainPage(): JSX.Element {
                 <b className="places__found">{currentOffers.length} places to stay in {selectedCity.name}</b>
                 <SortOptions />
                 <div className="cities__places-list places__list tabs__content">
-                  {isLoading ?
-                    <Loader /> :
-                    <OffersList
-                      offers={currentOffers}
-                      onOfferHover={handleOfferHover}
-                    />}
+                  <OffersList
+                    offers={currentOffers}
+                    onOfferHover={handleOfferHover}
+                  />
                 </div>
               </section>
               <div className="cities__right-section">
