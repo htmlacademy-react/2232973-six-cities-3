@@ -155,7 +155,7 @@ const offersSlice = createSlice({
         const { offerId, status } = action.meta.arg;
         const card = state.offers.find((item) => item.id === offerId);
         if (card) {
-          card.isFavorite = status === 0;
+          card.isFavorite = status !== 1;
         }
       });
   }

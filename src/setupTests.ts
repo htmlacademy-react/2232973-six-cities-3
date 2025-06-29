@@ -1,4 +1,11 @@
-import matchers from '@testing-library/jest-dom/matchers';
+import '@testing-library/jest-dom/vitest';
 import { expect } from 'vitest';
 
-expect.extend(matchers);
+expect.extend({
+  toBeWithinRange(received, min, max) {
+    return {
+      pass: received >= min && received <= max,
+      message: () => `Expected ${received} to be within ${min}-${max}`,
+    };
+  },
+});

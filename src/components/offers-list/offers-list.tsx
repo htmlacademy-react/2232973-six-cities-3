@@ -1,6 +1,6 @@
 import Card from '@/components/card';
 import { Offer } from '@/types/offers';
-
+import { memo } from 'react';
 
 type OffersListProps = {
   offers: Offer[];
@@ -8,18 +8,19 @@ type OffersListProps = {
   variant?: 'vertical' | 'horizontal';
 };
 
-export default function OffersList({ offers, onOfferHover, variant = 'vertical' }: OffersListProps): JSX.Element {
+const OffersList = memo<OffersListProps>(({ offers, onOfferHover, variant = 'vertical' }: OffersListProps) => (
+  <>
+    {offers.map((offer) => (
+      <Card
+        key={offer.id}
+        offer={offer}
+        onOfferHover={onOfferHover}
+        variant={variant}
+      />
+    ))}
+  </>
+));
 
-  return (
-    <>
-      {offers.map((offer) => (
-        <Card
-          key={offer.id}
-          offer={offer}
-          onOfferHover={onOfferHover}
-          variant={variant}
-        />
-      ))}
-    </>
-  );
-}
+OffersList.displayName = 'OffersList';
+
+export default OffersList;
