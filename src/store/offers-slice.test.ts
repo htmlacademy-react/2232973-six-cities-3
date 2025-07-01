@@ -28,7 +28,7 @@ const initialState = {
   offers: [],
   specificOffer: null,
   sortType: 'Popular',
-  favourites: [],
+  favorites: [],
   isLoading: false,
   error: null,
   nearbyCards: [],
@@ -100,16 +100,16 @@ describe('offers-slice', () => {
     expect(result.isNearbyLoading).toBe(false);
   });
 
-  it('should set favourites on fetchFavourites.fulfilled', () => {
+  it('should set favorites on fetchFavourites.fulfilled', () => {
     const favs = [mockOffer({ id: '5', isFavorite: true })];
     const result = offersReducer(initialState, { type: fetchFavourites.fulfilled.type, payload: favs });
-    expect(result.favourites).toEqual(favs);
+    expect(result.favorites).toEqual(favs);
   });
 
-  it('should clear favourites on fetchFavourites.rejected', () => {
-    const state = { ...initialState, favourites: [mockOffer({ id: '6', isFavorite: true })] };
+  it('should clear favorites on fetchFavourites.rejected', () => {
+    const state = { ...initialState, favorites: [mockOffer({ id: '6', isFavorite: true })] };
     const result = offersReducer(state, { type: fetchFavourites.rejected.type });
-    expect(result.favourites).toEqual([]);
+    expect(result.favorites).toEqual([]);
   });
 
   it('should update isFavorite on toggleFavourite.pending', () => {
@@ -118,19 +118,19 @@ describe('offers-slice', () => {
     expect(result.offers[0].isFavorite).toBe(true);
   });
 
-  it('should update offer and favourites on toggleFavourite.fulfilled (add)', () => {
+  it('should update offer and favorites on toggleFavourite.fulfilled (add)', () => {
     const offer = mockOffer({ id: '8', isFavorite: true });
-    const state = { ...initialState, offers: [mockOffer({ id: '8', isFavorite: false })], favourites: [] };
+    const state = { ...initialState, offers: [mockOffer({ id: '8', isFavorite: false })], favorites: [] };
     const result = offersReducer(state, { type: toggleFavourite.fulfilled.type, payload: offer });
     expect(result.offers[0].isFavorite).toBe(true);
-    expect(result.favourites).toContainEqual(offer);
+    expect(result.favorites).toContainEqual(offer);
   });
 
-  it('should remove from favourites on toggleFavourite.fulfilled (remove)', () => {
+  it('should remove from favorites on toggleFavourite.fulfilled (remove)', () => {
     const offer = mockOffer({ id: '9', isFavorite: false });
-    const state = { ...initialState, offers: [offer], favourites: [offer] };
+    const state = { ...initialState, offers: [offer], favorites: [offer] };
     const result = offersReducer(state, { type: toggleFavourite.fulfilled.type, payload: offer });
-    expect(result.favourites).not.toContainEqual(offer);
+    expect(result.favorites).not.toContainEqual(offer);
   });
 
   it('should revert isFavorite on toggleFavourite.rejected', () => {

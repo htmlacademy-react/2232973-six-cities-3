@@ -30,7 +30,7 @@ export const SIX_CITIES: City[] = [
 export enum AppRoute {
   Root = '/',
   Login = '/login',
-  Favourites = '/favourites',
+  Favourites = '/favorites',
   Offer = '/offer/:id',
 }
 

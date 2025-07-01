@@ -11,7 +11,7 @@ import { SIX_CITIES, AuthorizationStatus } from '@/const';
 
 vi.mock('@/pages/main-page', () => ({ default: () => <div data-testid="main-page">Main Page</div> }));
 vi.mock('@/pages/login-page', () => ({ default: () => <div data-testid="login-page">Login Page</div> }));
-vi.mock('@/pages/favourites-page', () => ({ default: () => <div data-testid="favourites-page">Favourites Page</div> }));
+vi.mock('@/pages/favorites-page', () => ({ default: () => <div data-testid="favorites-page">Favourites Page</div> }));
 vi.mock('@/pages/offer-page', () => ({ default: () => <div data-testid="offer-page">Offer Page</div> }));
 vi.mock('@/pages/not-found-page', () => ({ default: () => <div data-testid="not-found-page">Not Found Page</div> }));
 
@@ -24,7 +24,7 @@ const defaultOffersState = {
   offers: [],
   specificOffer: null,
   sortType: 'Popular',
-  favourites: [],
+  favorites: [],
   isLoading: false,
   error: null,
   nearbyCards: [],
@@ -82,16 +82,16 @@ describe('App', () => {
     expect(screen.queryByTestId('login-page')).not.toBeInTheDocument();
   });
 
-  it('renders favourites page for /favourites if authorized', () => {
-    window.history.pushState({}, '', '/favourites');
+  it('renders favorites page for /favorites if authorized', () => {
+    window.history.pushState({}, '', '/favorites');
     renderWithProviders(<App />, {
       preloadedState: { user: { authorizationStatus: AuthorizationStatus.Auth } },
     });
-    expect(screen.getByTestId('favourites-page')).toBeInTheDocument();
+    expect(screen.getByTestId('favorites-page')).toBeInTheDocument();
   });
 
-  it('redirects to login if not authorized and tries to access /favourites', () => {
-    window.history.pushState({}, '', '/favourites');
+  it('redirects to login if not authorized and tries to access /favorites', () => {
+    window.history.pushState({}, '', '/favorites');
     renderWithProviders(<App />, {
       preloadedState: { user: { authorizationStatus: AuthorizationStatus.NoAuth } },
     });
