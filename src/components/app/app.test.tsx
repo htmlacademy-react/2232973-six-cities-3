@@ -54,13 +54,17 @@ const renderWithProviders = (ui: React.ReactElement, { preloadedState = {} }: Re
 
 describe('App', () => {
   it('renders main page on default route', () => {
-    renderWithProviders(<App />);
+    renderWithProviders(<App />, {
+      preloadedState: { user: { authorizationStatus: AuthorizationStatus.Auth } }
+    });
     expect(screen.getByTestId('main-page')).toBeInTheDocument();
   });
 
   it('renders not found page on unknown route', () => {
     window.history.pushState({}, '', '/unknown');
-    renderWithProviders(<App />);
+    renderWithProviders(<App />, {
+      preloadedState: { user: { authorizationStatus: AuthorizationStatus.Auth } }
+    });
     expect(screen.getByTestId('not-found-page')).toBeInTheDocument();
   });
 

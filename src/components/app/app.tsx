@@ -22,8 +22,13 @@ export default function App(): JSX.Element {
   useEffect(() => {
     dispatch(checkUserStatus());
     dispatch(fetchOffers());
-    dispatch(fetchFavourites());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavourites());
+    }
+  }, [dispatch, authorizationStatus]);
 
   if (authorizationStatus === AuthorizationStatus.Unknown) {
     return <Loader />;
