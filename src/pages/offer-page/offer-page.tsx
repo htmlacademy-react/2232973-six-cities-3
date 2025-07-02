@@ -8,7 +8,7 @@ import { selectAuthStatus, selectOfferPageData, selectSortedComments } from '@/s
 import Loader from '@/components/loader/loader';
 import { memo, useEffect, useMemo } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
-import { capitalizeFirstLetter } from '@/common';
+import { capitalizeFirstLetter, pluralizeWord } from '@/common';
 import { clearComments, fetchComments } from '@/store/comments-slice';
 import { FavouriteButton } from '@/components/favourite-button/favourite-button';
 
@@ -98,10 +98,10 @@ export const OfferPage = memo((): JSX.Element => {
                 {capitalizeFirstLetter(type)}
               </li>
               <li className="offer__feature offer__feature--bedrooms">
-                {bedrooms} Bedrooms
+                {bedrooms} {pluralizeWord(bedrooms, 'bedroom')}
               </li>
               <li className="offer__feature offer__feature--adults">
-                  Max {maxAdults} adults
+                  Max {maxAdults} {pluralizeWord(maxAdults, 'adult')}
               </li>
             </ul>
             <div className="offer__price">
