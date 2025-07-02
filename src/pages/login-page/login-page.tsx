@@ -1,11 +1,20 @@
 import { UserAuth } from '../../types/user';
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useMemo } from 'react';
 import { loginUser } from '../../store/user-slice';
 import { useAppDispatch } from '@/hooks';
+import { SIX_CITIES } from '@/const';
+import { setCity } from '@/store/offers-slice';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage(): JSX.Element {
   const formRef = useRef<HTMLFormElement>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const randomCity = useMemo(() => {
+    const index = Math.floor(Math.random() * SIX_CITIES.length);
+    return SIX_CITIES[index];
+  }, []);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -19,6 +28,11 @@ export default function LoginPage(): JSX.Element {
     const data = Object.fromEntries(formData) as UserAuth;
 
     dispatch(loginUser(data));
+  };
+
+  const handleCityClick = () => {
+    dispatch(setCity(randomCity));
+    navigate('/');
   };
 
   return (
@@ -40,9 +54,9 @@ export default function LoginPage(): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
-              <span>Amsterdam</span>
-            </a>
+            <button className="locations__item-link" type="button" onClick={handleCityClick}>
+              <span>{randomCity.name}</span>
+            </button>
           </div>
         </section>
       </div>
