@@ -13,6 +13,7 @@ import { clearComments, fetchComments } from '@/store/comments-slice';
 import { FavouriteButton } from '@/components/favourite-button/favourite-button';
 
 const MAX_NEARBY_OFFERS = 3;
+const MAX_IMAGES = 6;
 
 export const OfferPage = memo((): JSX.Element => {
   const params = useParams();
@@ -47,6 +48,14 @@ export const OfferPage = memo((): JSX.Element => {
     [nearbyOffers]
   );
 
+  const mapOffers = useMemo(() => {
+    if (!currentOffer) {
+      return [];
+    }
+    const uniqueNearby = limitedNearbyOffers.filter((o) => o.id !== currentOffer.id);
+    return [currentOffer, ...uniqueNearby];
+  }, [currentOffer, limitedNearbyOffers]);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -63,7 +72,7 @@ export const OfferPage = memo((): JSX.Element => {
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
             {
-              images.map((image) => (
+              images.slice(0, MAX_IMAGES).map((image) => (
                 <div className="offer__image-wrapper" key={image}>
                   <img className="offer__image" src={image} alt="Photo studio" />
                 </div>
@@ -88,7 +97,7 @@ export const OfferPage = memo((): JSX.Element => {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{ width: '80%' }}></span>
+                <span style={{ width: `${(Math.round(rating) / 5) * 100}%` }}></span>
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{rating}</span>
@@ -121,7 +130,7 @@ export const OfferPage = memo((): JSX.Element => {
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
+                <div className={`offer__avatar-wrapper user__avatar-wrapper${host.isPro ? ' offer__avatar-wrapper--pro' : ''}`}>
                   <img className="offer__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
@@ -143,7 +152,7 @@ export const OfferPage = memo((): JSX.Element => {
         <section className="offer__map map">
           <Map
             city={currentOffer.city}
-            offers={limitedNearbyOffers}
+            offers={mapOffers}
             selectedOfferId={currentOffer.id}
           />
         </section>
@@ -154,7 +163,7 @@ export const OfferPage = memo((): JSX.Element => {
           <div className="near-places__list places__list">
             {isNearbyLoading ?
               <Loader /> :
-              <OffersList offers={limitedNearbyOffers} variant="vertical" />}
+              <OffersList offers={limitedNearbyOffers} variant="near-places" />}
           </div>
         </section>
       </div>

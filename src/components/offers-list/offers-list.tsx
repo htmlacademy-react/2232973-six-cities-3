@@ -5,7 +5,7 @@ import { memo } from 'react';
 type OffersListProps = {
   offers: Offer[];
   onOfferHover?: (offerId: string | null) => void;
-  variant?: 'vertical' | 'horizontal';
+  variant?: 'vertical' | 'horizontal' | 'near-places';
 };
 
 const OffersList = memo<OffersListProps>(({ offers, onOfferHover, variant = 'vertical' }: OffersListProps) => (

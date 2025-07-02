@@ -8,23 +8,30 @@ import { memo } from 'react';
 type CardProps = {
   offer: Offer;
   onOfferHover?: (offerId: string | null) => void;
-  variant?: 'vertical' | 'horizontal';
+  variant?: 'vertical' | 'horizontal' | 'near-places';
 };
 
 const cardConfig = {
-  vertical: {
+  'vertical': {
     articleClass: 'cities__card place-card',
     imageWrapperClass: 'cities__image-wrapper place-card__image-wrapper',
     infoClass: 'place-card__info',
     imageWidth: 260,
     imageHeight: 200,
   },
-  horizontal: {
+  'horizontal': {
     articleClass: 'favorites__card place-card',
     imageWrapperClass: 'favorites__image-wrapper place-card__image-wrapper',
     infoClass: 'favorites__card-info place-card__info',
     imageWidth: 150,
     imageHeight: 110,
+  },
+  'near-places': {
+    articleClass: 'near-places__card place-card',
+    imageWrapperClass: 'cities__image-wrapper place-card__image-wrapper',
+    infoClass: 'place-card__info',
+    imageWidth: 260,
+    imageHeight: 200,
   },
 } as const;
 

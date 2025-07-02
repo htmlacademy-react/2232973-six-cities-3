@@ -24,9 +24,15 @@ export const FavouriteButton = memo(({ offerId, isFavorite, fullcard = false }: 
     dispatch(toggleFavourite({ offerId, status: isFavorite ? 0 : 1}));
   };
 
+  const baseClass = fullcard ? 'offer__bookmark-button' : 'place-card__bookmark-button';
+  let activeClass = '';
+  if (isFavorite) {
+    activeClass = fullcard ? 'offer__bookmark-button--active' : 'place-card__bookmark-button--active';
+  }
+
   return (
     <button
-      className={`${fullcard ? 'offer' : 'place-card'}__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
+      className={`${baseClass} button ${activeClass}`.trim()}
       type="button"
       onClick={handleClick}
     >
