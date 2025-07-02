@@ -20,13 +20,25 @@ export default function FavouritesPage(): JSX.Element {
   const offers = useAppSelector(selectFavourites);
 
   const groupedOffers = groupOffersByCity(offers);
+  const isEmpty = offers.length === 0;
 
   return (
-    <main className="page__main page__main--favorites">
-      <div className="page__favorites-container container">
-        <section className="favorites">
-          {offers.length > 0 ? (
-            <><h1 className="favorites__title">Saved listing</h1>
+    <div className={`page${isEmpty ? ' page--favorites-empty' : ''}`}>
+      <main className={`page__main page__main--favorites${isEmpty ? ' page__main--favorites-empty' : ''}`}>
+        <div className="page__favorites-container container">
+          {isEmpty ? (
+            <section className="favorites favorites--empty">
+              <h1 className="visually-hidden">Favorites (empty)</h1>
+              <div className="favorites__status-wrapper">
+                <b className="favorites__status">Nothing yet saved.</b>
+                <p className="favorites__status-description">
+                  Save properties to narrow down search or plan your future trips.
+                </p>
+              </div>
+            </section>
+          ) : (
+            <section className="favorites">
+              <h1 className="favorites__title">Saved listing</h1>
               <ul className="favorites__list">
                 {Object.entries(groupedOffers).map(([cityName, cityOffers]) => (
                   <li className="favorites__locations-items" key={cityName}>
@@ -43,17 +55,10 @@ export default function FavouritesPage(): JSX.Element {
                   </li>
                 ))}
               </ul>
-            </>
-          ) : (
-            <div className="favorites__status-wrapper">
-              <b className="favorites__status">Nothing yet saved.</b>
-              <p className="favorites__status-description">
-                Save properties to narrow down search or plan your future trips.
-              </p>
-            </div>
+            </section>
           )}
-        </section>
-      </div>
-    </main>
+        </div>
+      </main>
+    </div>
   );
 }
