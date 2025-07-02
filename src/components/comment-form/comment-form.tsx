@@ -32,16 +32,19 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
     }
 
     setIsSending(true);
-    try {
-      void dispatch(postComment({
-        offerId,
-        comment: formData.reviewText,
-        rating: formData.rating,
-      })).unwrap();
-      setFormData({ rating: null, reviewText: ''});
-    } finally {
-      setIsSending(false);
-    }
+    dispatch(postComment({
+      offerId,
+      comment: formData.reviewText,
+      rating: formData.rating,
+    })).unwrap()
+      .then(() => {
+        setFormData({ rating: null, reviewText: '' });
+      })
+      .catch(() => {
+      })
+      .finally(() => {
+        setIsSending(false);
+      });
   };
 
   const isValid = formData.rating !== null && formData.reviewText.length >= MIN_COMMENT_LENGTH && formData.reviewText.length < MAX_COMMENT_LENGTH && !isSending;
@@ -69,6 +72,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
               checked={Number(rating) === value}
               onChange={handleChange}
               data-testid={`rating-${value}`}
+              disabled={isSending}
             />
             <label
               htmlFor={`${value}-stars`}
@@ -91,6 +95,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
         onChange={handleChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
         maxLength={MAX_COMMENT_LENGTH}
+        disabled={isSending}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
@@ -99,7 +104,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isSending}
         >
           Submit
         </button>
