@@ -1,5 +1,5 @@
 import { UserAuth } from '../../types/user';
-import { FormEvent, useRef, useMemo } from 'react';
+import { FormEvent, useRef, useMemo, useState } from 'react';
 import { loginUser } from '../../store/user-slice';
 import { useAppDispatch } from '@/hooks';
 import { SIX_CITIES } from '@/const';
@@ -10,23 +10,28 @@ export default function LoginPage(): JSX.Element {
   const formRef = useRef<HTMLFormElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [passwordError, setPasswordError] = useState('');
 
   const randomCity = useMemo(() => {
     const index = Math.floor(Math.random() * SIX_CITIES.length);
     return SIX_CITIES[index];
   }, []);
 
+  const isPasswordValid = (password: string) => /[A-Za-z]/.test(password) && /\d/.test(password);
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
+    setPasswordError('');
     const form = formRef.current;
     if (!form) {
       return;
     }
-
     const formData = new FormData(form);
     const data = Object.fromEntries(formData) as UserAuth;
-
+    if (!isPasswordValid(data.password)) {
+      setPasswordError('Password must contain at least one letter and one number.');
+      return;
+    }
     dispatch(loginUser(data));
   };
 
@@ -48,6 +53,7 @@ export default function LoginPage(): JSX.Element {
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">Password</label>
               <input className="login__input form__input" type="password" name="password" placeholder="Password" required />
+              {passwordError && <div style={{color: 'red', fontSize: '0.9em'}}>{passwordError}</div>}
             </div>
             <button className="login__submit form__submit button" type="submit">Sign in</button>
           </form>
