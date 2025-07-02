@@ -32,7 +32,7 @@ export default function MainPage(): JSX.Element {
   }
 
   return (
-    <main className="page__main page__main--index">
+    <main className={`page__main page__main--index${currentOffers.length === 0 ? ' page__main--index-empty' : ''}`}>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
@@ -54,7 +54,6 @@ export default function MainPage(): JSX.Element {
           </ul>
         </section>
       </div>
-
       <div className="cities">
         <div className="cities__places-container container">
           {currentOffers.length === 0 ? (
