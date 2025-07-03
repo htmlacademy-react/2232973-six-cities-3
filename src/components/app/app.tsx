@@ -1,6 +1,6 @@
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '@/const';
-import FavouritesPage from '@/pages/favourites-page';
+import FavouritesPage from '@/pages/favorites-page';
 import LoginPage from '@/pages/login-page';
 import OfferPage from '@/pages/offer-page';
 import MainPage from '@/pages/main-page';
@@ -12,6 +12,7 @@ import { selectAuthStatus } from '@/store/selectors';
 import { useEffect } from 'react';
 import { checkUserStatus } from '@/store/user-slice';
 import { fetchFavourites, fetchOffers } from '@/store/offers-slice';
+import Loader from '../loader/loader';
 
 
 export default function App(): JSX.Element {
@@ -21,8 +22,17 @@ export default function App(): JSX.Element {
   useEffect(() => {
     dispatch(checkUserStatus());
     dispatch(fetchOffers());
-    dispatch(fetchFavourites());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavourites());
+    }
+  }, [dispatch, authorizationStatus]);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown) {
+    return <Loader />;
+  }
 
   return (
     <BrowserRouter>

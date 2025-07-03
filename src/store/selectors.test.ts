@@ -47,7 +47,7 @@ const mockState = {
     ],
     specificOffer: { id: '1', city: cityParis, price: 100, rating: 4, isFavorite: false, ...offerBase },
     sortType: 'Popular',
-    favourites: [{ id: '2', city: cityParis, isFavorite: true, price: 200, rating: 5, ...offerBase }],
+    favorites: [{ id: '2', city: cityParis, isFavorite: true, price: 200, rating: 5, ...offerBase }],
     isLoading: false,
     error: null,
     nearbyCards: [{ id: '4', city: cityParis, isFavorite: false, price: 150, rating: 4, ...offerBase }],

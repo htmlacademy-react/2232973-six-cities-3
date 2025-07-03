@@ -8,7 +8,7 @@ type OffersState = {
   offers: Offer[];
   specificOffer: Offer | null;
   sortType: string;
-  favourites: Offer[];
+  favorites: Offer[];
   isLoading: boolean;
   error: string | null;
   nearbyCards: Offer[];
@@ -20,7 +20,7 @@ const initialState: OffersState = {
   offers: [] as Offer[],
   specificOffer: null,
   sortType: 'Popular',
-  favourites: [] as Offer[],
+  favorites: [] as Offer[],
   isLoading: false,
   error: null,
   nearbyCards: [] as Offer[],
@@ -122,10 +122,10 @@ const offersSlice = createSlice({
         state.error = action.error.message || 'Failed to load offers';
       })
       .addCase(fetchFavourites.fulfilled, (state, action) => {
-        state.favourites = action.payload;
+        state.favorites = action.payload;
       })
       .addCase(fetchFavourites.rejected, (state) => {
-        state.favourites = [];
+        state.favorites = [];
       })
       .addCase(toggleFavourite.pending, (state, action) => {
         const { offerId, status } = action.meta.arg;
@@ -144,9 +144,9 @@ const offersSlice = createSlice({
           Object.assign(state.specificOffer, updatedOffer);
         }
         if (updatedOffer.isFavorite) {
-          state.favourites.push(updatedOffer);
+          state.favorites.push(updatedOffer);
         } else {
-          state.favourites = state.favourites.filter(
+          state.favorites = state.favorites.filter(
             (item) => item.id !== updatedOffer.id
           );
         }

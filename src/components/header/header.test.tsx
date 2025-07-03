@@ -11,7 +11,7 @@ describe('Header', () => {
   it('renders Sign in when not authorized', () => {
     const store = mockStore({
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null },
-      offers: { favourites: [] },
+      offers: { favorites: [] },
     });
     render(
       <Provider store={store}>
@@ -30,7 +30,7 @@ describe('Header', () => {
         authorizationStatus: AuthorizationStatus.Auth,
         user: { email: 'test@mail.com', avatarUrl: 'avatar.png', name: '', isPro: false, token: '' },
       },
-      offers: { favourites: [{ id: 1 }, { id: 2 }] },
+      offers: { favorites: [{ id: 1 }, { id: 2 }] },
     });
     render(
       <Provider store={store}>
@@ -51,7 +51,7 @@ describe('Header', () => {
         authorizationStatus: AuthorizationStatus.Auth,
         user: { email: 'test@mail.com', avatarUrl: 'avatar.png', name: '', isPro: false, token: '' },
       },
-      offers: { favourites: [{ id: 1 }] },
+      offers: { favorites: [{ id: 1 }] },
     });
     store.dispatch = vi.fn();
     render(

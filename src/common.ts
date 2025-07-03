@@ -6,3 +6,7 @@ export function formatDateToMonthYear(isoDate: string) {
     year: 'numeric'
   }).format(new Date(isoDate));
 }
+
+export function pluralizeWord(count: number, singular: string): string {
+  return count === 1 ? singular : `${singular}s`;
+}

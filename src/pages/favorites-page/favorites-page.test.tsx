@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import FavouritesPage from './favourites-page';
+import FavouritesPage from './favorites-page';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { offersReducer } from '@/store/offers-slice';
@@ -49,9 +49,9 @@ function renderWithStore(preloadedState: Partial<State>) {
 }
 
 describe('FavouritesPage', () => {
-  it('shows empty state if no favourites', () => {
+  it('shows empty state if no favorites', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
@@ -59,9 +59,9 @@ describe('FavouritesPage', () => {
     expect(screen.getByText('Save properties to narrow down search or plan your future trips.')).toBeInTheDocument();
   });
 
-  it('shows grouped favourites by city', () => {
+  it('shows grouped favorites by city', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [mockOfferParis, mockOfferCologne], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [mockOfferParis, mockOfferCologne], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });

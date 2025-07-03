@@ -9,6 +9,7 @@ import { SIX_CITIES } from '@/const';
 import { City } from '@/types/offers';
 import Loader from '@/components/loader/loader';
 import EmptyMain from '@/components/empty-main/empty-main';
+import { pluralizeWord } from '@/common';
 
 export default function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -31,7 +32,7 @@ export default function MainPage(): JSX.Element {
   }
 
   return (
-    <main className="page__main page__main--index">
+    <main className={`page__main page__main--index${currentOffers.length === 0 ? ' page__main--index-empty' : ''}`}>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
@@ -53,7 +54,6 @@ export default function MainPage(): JSX.Element {
           </ul>
         </section>
       </div>
-
       <div className="cities">
         <div className="cities__places-container container">
           {currentOffers.length === 0 ? (
@@ -62,7 +62,7 @@ export default function MainPage(): JSX.Element {
             <>
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{currentOffers.length} places to stay in {selectedCity.name}</b>
+                <b className="places__found">{currentOffers.length} {pluralizeWord(currentOffers.length, 'place')} to stay in {selectedCity.name}</b>
                 <SortOptions />
                 <div className="cities__places-list places__list tabs__content">
                   <OffersList

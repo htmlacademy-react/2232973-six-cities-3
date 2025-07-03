@@ -62,7 +62,7 @@ function renderWithStore(preloadedState: Partial<State>) {
 describe('OfferPage', () => {
   it('shows Loader when isLoading', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: true, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: true, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
@@ -71,7 +71,7 @@ describe('OfferPage', () => {
 
   it('shows NotFoundPage if no offer', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
@@ -80,7 +80,7 @@ describe('OfferPage', () => {
 
   it('shows offer content, reviews, map and nearby offers', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: mockOffer, error: null, nearbyCards: mockNearby, isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: mockOffer, error: null, nearbyCards: mockNearby, isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.Auth, user: null, error: null },
       comments: { comments: mockComments, isSending: false },
     });
@@ -93,7 +93,7 @@ describe('OfferPage', () => {
 
   it('shows Loader for nearby offers if isNearbyLoading', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: mockOffer, error: null, nearbyCards: mockNearby, isNearbyLoading: true },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: mockOffer, error: null, nearbyCards: mockNearby, isNearbyLoading: true },
       user: { authorizationStatus: AuthorizationStatus.Auth, user: null, error: null },
       comments: { comments: mockComments, isSending: false },
     });

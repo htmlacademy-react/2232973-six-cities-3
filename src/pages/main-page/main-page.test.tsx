@@ -49,7 +49,7 @@ function renderWithStore(preloadedState: Partial<State>) {
 describe('MainPage', () => {
   it('shows Loader when isLoading', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: true, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: true, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
@@ -58,7 +58,7 @@ describe('MainPage', () => {
 
   it('shows empty state if no offers', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
@@ -67,7 +67,7 @@ describe('MainPage', () => {
 
   it('shows offers list if there are offers', () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [mockOffer], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [mockOffer], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
@@ -78,7 +78,7 @@ describe('MainPage', () => {
 
   it('switches city by clicking', async () => {
     renderWithStore({
-      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favourites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
+      offers: { city: SIX_CITIES[0], offers: [], isLoading: false, sortType: 'Popular', favorites: [], specificOffer: null, error: null, nearbyCards: [], isNearbyLoading: false },
       user: { authorizationStatus: AuthorizationStatus.NoAuth, user: null, error: null },
       comments: { comments: [], isSending: false },
     });
