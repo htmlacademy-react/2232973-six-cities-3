@@ -43,11 +43,7 @@ export const OfferPage = memo((): JSX.Element => {
     };
   }, [params.id, dispatch]);
 
-  const limitedNearbyOffers = useMemo(
-    () => nearbyOffers.slice(0, MAX_NEARBY_OFFERS),
-    [nearbyOffers]
-  );
-
+  const limitedNearbyOffers = nearbyOffers.slice(0, MAX_NEARBY_OFFERS);
   const mapOffers = useMemo(() => {
     if (!currentOffer) {
       return [];

@@ -143,6 +143,10 @@ const offersSlice = createSlice({
         if (state.specificOffer?.id === updatedOffer.id) {
           Object.assign(state.specificOffer, updatedOffer);
         }
+        const nearbyCard = state.nearbyCards.find((item) => item.id === updatedOffer.id);
+        if (nearbyCard) {
+          Object.assign(nearbyCard, updatedOffer);
+        }
         if (updatedOffer.isFavorite) {
           state.favorites.push(updatedOffer);
         } else {

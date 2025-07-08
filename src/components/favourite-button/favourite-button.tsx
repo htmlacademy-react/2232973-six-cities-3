@@ -37,7 +37,7 @@ export const FavouriteButton = memo(({ offerId, isFavorite, fullcard = false }: 
       onClick={handleClick}
     >
       <svg
-        className="place-card__bookmark-icon"
+        className={fullcard ? 'offer__bookmark-icon' : 'place-card__bookmark-icon'}
         width={fullcard ? 31 : 18}
         height={fullcard ? 33 : 19}
       >

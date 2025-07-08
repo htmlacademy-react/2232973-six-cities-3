@@ -77,6 +77,7 @@ export const Card = memo(({
           <FavouriteButton
             offerId={offer.id}
             isFavorite={offer.isFavorite}
+            fullcard={false}
           />
         </div>
         <div className="place-card__rating rating">
