@@ -1,4 +1,4 @@
-import { formatDateToMonthYear } from '@/common';
+import { formatDateToMonthYear, getRatingWidth } from '@/common';
 import { Review } from '@/types/reviews';
 import { memo } from 'react';
 
@@ -8,7 +8,6 @@ type ReviewItemProps = {
 
 export const ReviewItem = memo(({ review }: ReviewItemProps): JSX.Element => {
   const { user, comment, date, rating } = review;
-  const ratingWidth = `${Math.round(rating) * 20}%`;
 
   return (
     <li className="reviews__item">
@@ -28,7 +27,7 @@ export const ReviewItem = memo(({ review }: ReviewItemProps): JSX.Element => {
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{ width: ratingWidth }}></span>
+            <span style={{ width: getRatingWidth(rating) }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>

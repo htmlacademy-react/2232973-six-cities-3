@@ -9,6 +9,7 @@ import { SIX_CITIES } from '@/const';
 import { City } from '@/types/offers';
 import Loader from '@/components/loader/loader';
 import EmptyMain from '@/components/empty-main/empty-main';
+import { ErrorPage } from '@/pages/error-page/error-page';
 import { pluralizeWord } from '@/common';
 
 export default function MainPage(): JSX.Element {
@@ -16,6 +17,7 @@ export default function MainPage(): JSX.Element {
   const selectedCity = useAppSelector((state) => state.offers.city);
   const currentOffers = useAppSelector(selectSortedOffers);
   const isLoading = useAppSelector((state) => state.offers.isLoading);
+  const error = useAppSelector((state) => state.offers.error);
 
   const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
 
@@ -29,6 +31,10 @@ export default function MainPage(): JSX.Element {
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (error) {
+    return <ErrorPage />;
   }
 
   return (

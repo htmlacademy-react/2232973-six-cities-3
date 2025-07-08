@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react';
 import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import useMap from './useMap';
+import useMap from './use-map';
 import { City, Offer } from '@/types/offers';
 
 type MapProps = {
@@ -11,15 +11,11 @@ type MapProps = {
 }
 
 const defaultCustomIcon = leaflet.icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'img/pin.svg'
 });
 
 const highlightedIcon = leaflet.icon({
-  iconUrl: 'img/pin-active.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'img/pin-active.svg'
 });
 
 
@@ -53,7 +49,7 @@ function Map({ city, offers, selectedOfferId }: MapProps): JSX.Element {
 
   return (
     <div
-      style={{ height: '600px' }}
+      style={{ height: '100%' }}
       ref={mapRef}
     >
     </div>

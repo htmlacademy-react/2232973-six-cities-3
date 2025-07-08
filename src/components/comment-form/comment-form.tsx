@@ -2,8 +2,11 @@ import { useAppDispatch } from '@/hooks';
 import { postComment } from '@/store/comments-slice';
 import { useState, FormEvent, ChangeEvent, Fragment, memo } from 'react';
 
-const MIN_COMMENT_LENGTH = 50;
-const MAX_COMMENT_LENGTH = 300;
+const CommentLength = {
+  Min: 50,
+  Max: 300,
+} as const;
+
 
 type CommentFormProps = {
   offerId: string | undefined;
@@ -12,6 +15,7 @@ type CommentFormProps = {
 export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<{
     rating: number | null;
     reviewText: string;
@@ -27,11 +31,12 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
 
   const handleSubmit = (evt: FormEvent) => {
     evt.preventDefault();
-    if (!offerId || isSending || !formData.rating || formData.reviewText.length < MIN_COMMENT_LENGTH || formData.reviewText.length >= MAX_COMMENT_LENGTH) {
+    if (!offerId || isSending || !formData.rating || formData.reviewText.length < CommentLength.Min || formData.reviewText.length >= CommentLength.Max) {
       return;
     }
 
     setIsSending(true);
+    setError(null);
     dispatch(postComment({
       offerId,
       comment: formData.reviewText,
@@ -41,13 +46,14 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
         setFormData({ rating: null, reviewText: '' });
       })
       .catch(() => {
+        setError('Failed to submit. Please try again.');
       })
       .finally(() => {
         setIsSending(false);
       });
   };
 
-  const isValid = formData.rating !== null && formData.reviewText.length >= MIN_COMMENT_LENGTH && formData.reviewText.length < MAX_COMMENT_LENGTH && !isSending;
+  const isValid = formData.rating !== null && formData.reviewText.length >= CommentLength.Min && formData.reviewText.length < CommentLength.Max && !isSending;
   const { rating: rawRating, reviewText } = formData;
   const rating = typeof rawRating === 'string' ? Number(rawRating) : rawRating;
   const ratingTitles = ['terribly', 'badly', 'not bad', 'good', 'perfect'];
@@ -94,12 +100,12 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
         value={reviewText}
         onChange={handleChange}
         placeholder="Tell how was your stay, what you like and what can be improved"
-        maxLength={MAX_COMMENT_LENGTH}
+        maxLength={CommentLength.Max}
         disabled={isSending}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{MIN_COMMENT_LENGTH} characters</b>.
+          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">{CommentLength.Min} characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"
@@ -109,6 +115,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
           Submit
         </button>
       </div>
+      {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
     </form>
   );
 });

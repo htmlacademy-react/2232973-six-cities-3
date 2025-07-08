@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { toggleFavourite } from '@/store/offers-slice';
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { selectAuthStatus } from '@/store/selectors';
 import { AuthorizationStatus, AppRoute } from '@/const';
@@ -15,13 +15,24 @@ export const FavouriteButton = memo(({ offerId, isFavorite, fullcard = false }: 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const authorizationStatus = useAppSelector(selectAuthStatus);
+  const [isPending, setIsPending] = useState(false);
 
   const handleClick = () => {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
       return;
     }
-    dispatch(toggleFavourite({ offerId, status: isFavorite ? 0 : 1}));
+    if (isPending) {
+      return;
+    }
+    setIsPending(true);
+    (async () => {
+      try {
+        await dispatch(toggleFavourite({ offerId, status: isFavorite ? 0 : 1 })).unwrap();
+      } finally {
+        setIsPending(false);
+      }
+    })();
   };
 
   const baseClass = fullcard ? 'offer__bookmark-button' : 'place-card__bookmark-button';
@@ -35,9 +46,10 @@ export const FavouriteButton = memo(({ offerId, isFavorite, fullcard = false }: 
       className={`${baseClass} button ${activeClass}`.trim()}
       type="button"
       onClick={handleClick}
+      disabled={isPending}
     >
       <svg
-        className="place-card__bookmark-icon"
+        className={fullcard ? 'offer__bookmark-icon' : 'place-card__bookmark-icon'}
         width={fullcard ? 31 : 18}
         height={fullcard ? 33 : 19}
       >

@@ -8,7 +8,7 @@ import { selectAuthStatus, selectOfferPageData, selectSortedComments } from '@/s
 import Loader from '@/components/loader/loader';
 import { memo, useEffect, useMemo } from 'react';
 import { clearNearbyOffers, clearSpecificOffer, fetchNearbyOffers, fetchOfferById } from '@/store/offers-slice';
-import { capitalizeFirstLetter, pluralizeWord } from '@/common';
+import { capitalizeFirstLetter, pluralizeWord, getRatingWidth } from '@/common';
 import { clearComments, fetchComments } from '@/store/comments-slice';
 import { FavouriteButton } from '@/components/favourite-button/favourite-button';
 
@@ -43,11 +43,7 @@ export const OfferPage = memo((): JSX.Element => {
     };
   }, [params.id, dispatch]);
 
-  const limitedNearbyOffers = useMemo(
-    () => nearbyOffers.slice(0, MAX_NEARBY_OFFERS),
-    [nearbyOffers]
-  );
-
+  const limitedNearbyOffers = nearbyOffers.slice(0, MAX_NEARBY_OFFERS);
   const mapOffers = useMemo(() => {
     if (!currentOffer) {
       return [];
@@ -97,7 +93,7 @@ export const OfferPage = memo((): JSX.Element => {
             </div>
             <div className="offer__rating rating">
               <div className="offer__stars rating__stars">
-                <span style={{ width: `${(Math.round(rating) / 5) * 100}%` }}></span>
+                <span style={{ width: getRatingWidth(rating) }}></span>
                 <span className="visually-hidden">Rating</span>
               </div>
               <span className="offer__rating-value rating__value">{rating}</span>

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import useMap from './useMap';
+import useMap from './use-map';
 import { vi } from 'vitest';
 
 vi.mock('leaflet', async () => {
