@@ -11,15 +11,11 @@ type MapProps = {
 }
 
 const defaultCustomIcon = leaflet.icon({
-  iconUrl: 'img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'img/pin.svg'
 });
 
 const highlightedIcon = leaflet.icon({
-  iconUrl: 'img/pin-active.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconUrl: 'img/pin-active.svg'
 });
 
 
