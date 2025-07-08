@@ -10,3 +10,7 @@ export function formatDateToMonthYear(isoDate: string) {
 export function pluralizeWord(count: number, singular: string): string {
   return count === 1 ? singular : `${singular}s`;
 }
+
+export function getRatingWidth(rating: number): string {
+  return `${Math.round(rating) * 20}%`;
+}

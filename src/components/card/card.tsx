@@ -1,6 +1,6 @@
 import { Offer } from '@/types/offers';
 import { Link } from 'react-router-dom';
-import { capitalizeFirstLetter } from '@/common';
+import { capitalizeFirstLetter, getRatingWidth } from '@/common';
 import { FavouriteButton } from '../favourite-button/favourite-button';
 import { memo } from 'react';
 
@@ -42,7 +42,6 @@ export const Card = memo(({
   variant = 'vertical'
 }: CardProps): JSX.Element => {
   const { isPremium, price, title, type, rating, previewImage} = offer;
-  const ratingWidth = `${Math.round(rating) * 20}%`;
 
   const config = cardConfig[variant];
 
@@ -82,7 +81,7 @@ export const Card = memo(({
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{ width: ratingWidth }}></span>
+            <span style={{ width: getRatingWidth(rating) }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
