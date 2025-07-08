@@ -15,6 +15,7 @@ type CommentFormProps = {
 export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<{
     rating: number | null;
     reviewText: string;
@@ -35,6 +36,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
     }
 
     setIsSending(true);
+    setError(null);
     dispatch(postComment({
       offerId,
       comment: formData.reviewText,
@@ -44,6 +46,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
         setFormData({ rating: null, reviewText: '' });
       })
       .catch(() => {
+        setError('Failed to submit. Please try again.');
       })
       .finally(() => {
         setIsSending(false);
@@ -112,6 +115,7 @@ export const CommentForm = memo(({ offerId }: CommentFormProps): JSX.Element => 
           Submit
         </button>
       </div>
+      {error && <div style={{ color: 'red', marginTop: 8 }}>{error}</div>}
     </form>
   );
 });
